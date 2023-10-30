@@ -1,4 +1,5 @@
 /* https://www.sqlshack.com/learn-sql-naming-conventions/ */
+CREATE DATABASE CINE_MOVIL;
 USE CINE_MOVIL;
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
