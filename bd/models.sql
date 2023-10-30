@@ -1,4 +1,4 @@
-
+/* https://www.sqlshack.com/learn-sql-naming-conventions/ */
 USE CINE_MOVIL;
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -6,7 +6,7 @@ CREATE TABLE user (
     name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
     second_last_name VARCHAR(64) NOT NULL,
-    role_id VARCHAR(124) NOT NULL,
+    role_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -137,7 +137,6 @@ CREATE TABLE cinema (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name varchar(255),
     location_id INT NOT NULL,
-    movie_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -159,7 +158,8 @@ CREATE TABLE `function` (
     id INT PRIMARY KEY AUTO_INCREMENT,
     cinema_id INT NOT NULL,
     start_date TIMESTAMP NOT NULL,
-    function_status_id INT,
+    function_status_id INT NOT NULL ,
+    movie_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -186,11 +186,11 @@ CREATE TABLE seat_of_function (
 );
 
 
-CREATE TABLE spectacle (
+CREATE TABLE sale (
     id INT PRIMARY KEY AUTO_INCREMENT,
     client_id INT NOT NULL,
     seller_id INT NOT NULL,
-    payment_status_id INT NOT NULL,
+    payment_info_id INT NOT NULL,
     
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -198,9 +198,9 @@ CREATE TABLE spectacle (
     status bit NOT NULL DEFAULT 1
 );
 
-CREATE TABLE order_detail (
+CREATE TABLE sale_detail (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT NOT NULL,
+    sale_id INT NOT NULL,
     seat_of_function_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -282,5 +282,107 @@ CREATE TABLE enviroment_server (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     status bit NOT NULL DEFAULT 1
-)
+);
 
+
+/* --------------------------------------------------------------------------------------------- */
+ 
+-- ALTER TABLE user ADD 
+
+-- USER
+ALTER TABLE user  ADD  CONSTRAINT user_auth FOREIGN KEY(auth_id)
+REFERENCES auth (id);
+
+
+ALTER TABLE user  ADD  CONSTRAINT user_role FOREIGN KEY(role_id)
+REFERENCES role (id);
+
+-- Role_Module
+
+ALTER TABLE module  ADD  CONSTRAINT module_page FOREIGN KEY(page_id)
+REFERENCES page (id);
+
+ALTER TABLE role_module  ADD  CONSTRAINT role_module_role FOREIGN KEY(role_id)
+REFERENCES role (id);
+
+ALTER TABLE role_module  ADD  CONSTRAINT role_module_module FOREIGN KEY(module_id)
+REFERENCES module (id);
+
+-- Cinema
+ALTER TABLE cinema  ADD  CONSTRAINT cinema_location FOREIGN KEY(location_id)
+REFERENCES location (id);
+
+-- Room
+
+ALTER TABLE room  ADD  CONSTRAINT room_type_room FOREIGN KEY(type_room_id)
+REFERENCES type_room (id);
+
+ALTER TABLE room  ADD  CONSTRAINT room_cinema FOREIGN KEY(cinema_id)
+REFERENCES cinema (id);
+
+
+-- Seat of room
+
+ALTER TABLE seat_of_room ADD CONSTRAINT seat_of_room_room FOREIGN KEY(room_id)
+REFERENCES room (id);
+
+ALTER TABLE seat_of_room ADD CONSTRAINT position_of_room_room FOREIGN KEY(position_of_seat_id)
+REFERENCES position_of_seat (id);
+
+ALTER TABLE position_of_seat ADD CONSTRAINT position_of_seat_column_of_seat FOREIGN KEY(column_of_seat_id)
+REFERENCES column_of_seat (id);
+
+ALTER TABLE position_of_seat ADD CONSTRAINT position_of_seat_row_of_seat FOREIGN KEY(row_of_seat_id)
+REFERENCES row_of_seat (id);
+
+-- Function
+
+ALTER TABLE `function` ADD CONSTRAINT function_cinema FOREIGN KEY(cinema_id)
+REFERENCES cinema (id);
+
+ALTER TABLE `function` ADD CONSTRAINT function_function_status FOREIGN KEY(function_status_id)
+REFERENCES function_status (id);
+
+ALTER TABLE seat_of_function ADD CONSTRAINT seat_of_function_seat_of_room FOREIGN KEY(seat_of_room_id)
+REFERENCES seat_of_room (id);
+
+ALTER TABLE `function` ADD CONSTRAINT function_movie FOREIGN KEY(movie_id)
+REFERENCES movie (id);
+
+-- sale
+
+ALTER TABLE sale ADD CONSTRAINT sale_client FOREIGN KEY(client_id)
+REFERENCES client (id);
+
+ALTER TABLE sale ADD CONSTRAINT sale_seller FOREIGN KEY(seller_id)
+REFERENCES seller (id);
+
+ALTER TABLE sale ADD CONSTRAINT sele_payment_info FOREIGN KEY(payment_info_id)
+REFERENCES payment_info (id);
+
+ALTER TABLE sale_detail ADD CONSTRAINT sale_detail_sale FOREIGN KEY(sale_id)
+REFERENCES sale (id);
+
+ALTER TABLE sale_detail ADD CONSTRAINT sale_detail_seat_of_function FOREIGN KEY(seat_of_function_id)
+REFERENCES seat_of_function (id);
+
+-- seller
+ALTER TABLE seller ADD CONSTRAINT seller_user FOREIGN KEY(user_id)
+REFERENCES user (id);
+
+ALTER TABLE seller ADD CONSTRAINT seller_type_of_seller FOREIGN KEY(type_of_seller_id)
+REFERENCES type_of_seller (id);
+
+-- client
+ALTER TABLE client ADD CONSTRAINT client_user FOREIGN KEY(user_id)
+REFERENCES user (id);
+
+
+-- Payment info
+ALTER TABLE payment_info ADD CONSTRAINT payment_info_payment_status FOREIGN KEY(payment_status_id)
+REFERENCES payment_status (id);
+
+-- config
+
+ALTER TABLE config ADD CONSTRAINT config_enviroment_server FOREIGN KEY(enviroment_server_id)
+REFERENCES enviroment_server (id);
