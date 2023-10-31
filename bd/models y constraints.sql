@@ -8,6 +8,7 @@ CREATE TABLE user (
     last_name VARCHAR(64) NOT NULL,
     second_last_name VARCHAR(64) NOT NULL,
     role_id INT NOT NULL,
+    email VARCHAR(100) NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -26,6 +27,7 @@ CREATE TABLE auth (
 CREATE TABLE role (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64) NOT NULL,
+    is_worker BIT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -65,6 +67,8 @@ CREATE TABLE movie (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64),
     description varchar(3024),
+    category_id INT NOT NULL,
+    movie_clasification_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -157,7 +161,7 @@ CREATE TABLE location (
 
 CREATE TABLE `function` (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    cinema_id INT NOT NULL,
+    room_id INT NOT NULL,
     start_date TIMESTAMP NOT NULL,
     function_status_id INT NOT NULL ,
     movie_id INT NOT NULL,
@@ -180,6 +184,7 @@ CREATE TABLE seat_of_function (
     id INT PRIMARY KEY AUTO_INCREMENT,
     seat_of_room_id INT,
     price DECIMAL(10,3),
+    function_id INT NOT NULL,
     
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -285,7 +290,26 @@ CREATE TABLE enviroment_server (
     status bit NOT NULL DEFAULT 1
 );
 
+CREATE TABLE category (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    min_age int NOT NULL,
 
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status bit NOT NULL DEFAULT 1
+);
+
+CREATE TABLE movie_clasification (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    description varchar(255) NOT NULL,
+    
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status bit NOT NULL DEFAULT 1
+
+);
 /* --------------------------------------------------------------------------------------------- */
  
 -- ALTER TABLE user ADD 
@@ -338,8 +362,8 @@ REFERENCES row_of_seat (id);
 
 -- Function
 
-ALTER TABLE `function` ADD CONSTRAINT function_cinema FOREIGN KEY(cinema_id)
-REFERENCES cinema (id);
+ALTER TABLE `function` ADD CONSTRAINT function_room FOREIGN KEY(room_id)
+REFERENCES room (id);
 
 ALTER TABLE `function` ADD CONSTRAINT function_function_status FOREIGN KEY(function_status_id)
 REFERENCES function_status (id);
@@ -347,7 +371,16 @@ REFERENCES function_status (id);
 ALTER TABLE seat_of_function ADD CONSTRAINT seat_of_function_seat_of_room FOREIGN KEY(seat_of_room_id)
 REFERENCES seat_of_room (id);
 
+ALTER TABLE seat_of_function ADD CONSTRAINT seat_of_function_function FOREIGN KEY(function_id)
+REFERENCES `function` (id);
+
 ALTER TABLE `function` ADD CONSTRAINT function_movie FOREIGN KEY(movie_id)
+REFERENCES movie (id);
+
+ALTER TABLE `movie` ADD CONSTRAINT movie_category FOREIGN KEY(category_id)
+REFERENCES category (id);
+
+ALTER TABLE `movie` ADD CONSTRAINT movie_movie_clasification FOREIGN KEY(movie_clasification_id)
 REFERENCES movie (id);
 
 -- sale
