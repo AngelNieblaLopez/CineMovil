@@ -381,7 +381,7 @@ ALTER TABLE `movie` ADD CONSTRAINT movie_category FOREIGN KEY(category_id)
 REFERENCES category (id);
 
 ALTER TABLE `movie` ADD CONSTRAINT movie_movie_clasification FOREIGN KEY(movie_clasification_id)
-REFERENCES movie (id);
+REFERENCES movie_clasification (id);
 
 -- sale
 
