@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Predis\Connection\Cluster\RedisCluster;
 
 class UserController extends BaseController
@@ -19,7 +20,7 @@ class UserController extends BaseController
 
     public function index()
     {
-        $users = $this->userModel->orderBy('id', 'desc')->findAll();
+        $users = $this->userModel->orderBy('id', 'asc')->findAll();
         return view('users/index', compact('users'));
     }
 
@@ -39,13 +40,22 @@ class UserController extends BaseController
     }
 
     public function create() {
-        
+
+        $this->userModel->save([
+            "nombre" =>$this->request->getVar('nombre'),
+            "apellido_paterno" => $this->request->getVar('apellido_paterno'),
+            "apellido_materno" => $this->request->getVar('apellido_materno')
+        ]);
+
+
+        session()->setFlashdata("success", "Se agregó un nuevo usuario");
+        return redirect()->to(site_url('/users'));
     }
 
     public function edit($id = null) {
         $user = $this->userModel->find($id);
         if($user) {
-            return view('users/edit');
+            return view('users/edit', compact("user"));
         } else {
             session()->setFlashdata('failed', 'Usuario no encontrado');
             return redirect()->to('/users');
@@ -53,11 +63,21 @@ class UserController extends BaseController
     }
 
     public function update($id = null) {
-        
+        $this->userModel->save([
+            'id' => $id,
+            'nombre' => $this->request->getVar('nombre'),
+            'apellido_paterno' => $this->request->getVar('apellido_paterno'),
+            "apellido_materno" => $this->request->getVar('apellido_materno')
+        ]);
+
+        session()->setFlashdata('success', "Se modificaron los datos del usuario");
+        return redirect()->to(base_url('/users'));
     }
 
     public function delete($id = null) {
-        
+        $this->userModel-> delete($id);
+        session()->setFlashdata('success', 'Usuario eliminado');
+        return redirect()->to(base_url('/users'));
     }
     
 }
