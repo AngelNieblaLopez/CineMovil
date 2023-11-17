@@ -12,6 +12,8 @@ $this->section('title'); ?> Listado de usuarios <?= $this->endSection(); ?>
 </div>
 
 
+
+
 <div class="row py-2">
     <div class="col-xl-12">
         <?php
