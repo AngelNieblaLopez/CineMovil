@@ -48,10 +48,14 @@ use App\Controllers\BaseController;
         }
     
         public function create() {
-    
+            $isWorker = $this->request->getVar('is_worker');
+            if(!$isWorker) {
+                $isWorker = false;
+            }
+
             $this->roleModel->save([
                 "name" =>$this->request->getVar('name'),
-                "is_worker" =>$this->request->getVar('is_worker'),
+                "is_worker" =>$isWorker,
             ]);
     
     
@@ -71,10 +75,15 @@ use App\Controllers\BaseController;
         }
     
         public function update($id = null) {
+            $isWorker = $this->request->getVar('is_worker');
+            if(!$isWorker) {
+                $isWorker = false;
+            }
+
             $this->roleModel->save([
                 'id' => $id,
                 'name' => $this->request->getVar('name'),
-                'is_worker' => $this->request->getVar('is_worker'),
+                'is_worker' => $isWorker,
             ]);
     
             session()->setFlashdata('success', "Se modificaron los datos del rol");

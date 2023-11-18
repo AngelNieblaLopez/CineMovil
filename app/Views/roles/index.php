@@ -6,7 +6,7 @@ $this->section('title'); ?> Listado de roles <?= $this->endSection(); ?>
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('roles/new') ?>" class="btn btn-primary">Nuevo role</a>
+            <a href="<?= base_url('roles/new') ?>" class="btn btn-primary">Nuevo rol</a>
         </div>
     </div>
 </div>

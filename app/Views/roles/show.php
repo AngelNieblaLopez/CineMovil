@@ -22,7 +22,7 @@ $this->section('title') ?> Crear nuevo rol <?= $this->endSection() ?>
                         </div>
 
                         <div class="form-group mb-3">
-                            <input type="checkbox" class="form-check-input" disabled checked="<?= $role['is_worker'] ?>">
+                            <input type="checkbox" class="form-check-input" disabled  <?= $role["is_worker"] == "1"? "checked" : "" ?>>
                             <label class="form-check-label">Es trabajador</label>
                         </div>
                     </div>

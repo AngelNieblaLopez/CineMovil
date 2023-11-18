@@ -27,7 +27,8 @@ $this->section('title') ?> Editar role <?= $this->endSection() ?>
                                                                                                                                                         endif ?>">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <input type="checkbox" class="form-check-input" name="is_worker" checked="<?php if ($role['is_worker']) : echo $role['is_worker'];                                                                                                                                                                            else : set_value(false);                                                                                                                                  endif ?>">
+                                        <input type="checkbox" class="form-check-input" name="is_worker"  <?= $role["is_worker"] == "1"? "checked" : "" ?>>
+                                            
                                         <label class="form-check-label">Es trabajador</label>
                                     </div>
                                     <button type="submit" class="btn btn-success">Modificar datos</button>

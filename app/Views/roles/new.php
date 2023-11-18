@@ -2,7 +2,7 @@
 $this->section('title') ?> Crear nuevo role <?= $this->endSection() ?>
 
 
-<?= $this->section('content')?>
+<?= $this->section('content') ?>
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
@@ -24,7 +24,8 @@ $this->section('title') ?> Crear nuevo role <?= $this->endSection() ?>
                                         <input type="text" class="form-control" name="name" placeholder="Proporcione el nombre del role">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <input type="checkbox" class="form-check-input" name="is_worker">
+                                        <input type="checkbox" class="form-check-input" name="is_worker" 
+                                        >
                                         <label class="form-check-label">Es trabajador</label>
                                     </div>
 
