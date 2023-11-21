@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class AuthModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'user';
+    protected $table            = 'auth';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'auth_id', 'first_name', 'second_name', 'last_name', 'second_last_name', 'role_id', 'email', 'created_at', 'updated_at', 'status'];
+    protected $allowedFields    = ['id', 'password', 'created_at', 'updated_at', 'status'];
 
     // Dates
     protected $useTimestamps = false;

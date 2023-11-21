@@ -4,7 +4,8 @@ USE CINE_MOVIL;
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     auth_id INT NOT NULL,
-    name VARCHAR(64) NOT NULL,
+    first_name VARCHAR(64) NOT NULL,
+    second_name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
     second_last_name VARCHAR(64) NOT NULL,
     role_id INT NOT NULL,
@@ -195,7 +196,7 @@ CREATE TABLE seat_of_function (
 CREATE TABLE sale (
     id INT PRIMARY KEY AUTO_INCREMENT,
     client_id INT NOT NULL,
-    seller_id INT NOT NULL,
+    worker_id INT NOT NULL,
     payment_info_id INT NOT NULL,
     
 
@@ -214,10 +215,10 @@ CREATE TABLE sale_detail (
     status bit NOT NULL DEFAULT 1
 );
 
-CREATE TABLE seller (
+CREATE TABLE worker (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
-    type_of_seller_id INT NOT NULL,
+    type_of_worker_id INT NOT NULL,
     
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -233,7 +234,7 @@ CREATE TABLE client (
     status bit NOT NULL DEFAULT 1
 );
 
-CREATE TABLE type_of_seller (
+CREATE TABLE type_of_worker (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     
@@ -274,7 +275,7 @@ CREATE TABLE config (
     enviroment_server_id INT NOT NULL,
     name varchar(255) NOT NULL,
 
-    app_seller_id INT NOT NULL,
+    app_worker_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -388,8 +389,8 @@ REFERENCES movie_clasification (id);
 ALTER TABLE sale ADD CONSTRAINT sale_client FOREIGN KEY(client_id)
 REFERENCES client (id);
 
-ALTER TABLE sale ADD CONSTRAINT sale_seller FOREIGN KEY(seller_id)
-REFERENCES seller (id);
+ALTER TABLE sale ADD CONSTRAINT sale_worker FOREIGN KEY(worker_id)
+REFERENCES worker (id);
 
 ALTER TABLE sale ADD CONSTRAINT sele_payment_info FOREIGN KEY(payment_info_id)
 REFERENCES payment_info (id);
@@ -400,12 +401,12 @@ REFERENCES sale (id);
 ALTER TABLE sale_detail ADD CONSTRAINT sale_detail_seat_of_function FOREIGN KEY(seat_of_function_id)
 REFERENCES seat_of_function (id);
 
--- seller
-ALTER TABLE seller ADD CONSTRAINT seller_user FOREIGN KEY(user_id)
+-- worker
+ALTER TABLE worker ADD CONSTRAINT worker_user FOREIGN KEY(user_id)
 REFERENCES user (id);
 
-ALTER TABLE seller ADD CONSTRAINT seller_type_of_seller FOREIGN KEY(type_of_seller_id)
-REFERENCES type_of_seller (id);
+ALTER TABLE worker ADD CONSTRAINT worker_type_of_worker FOREIGN KEY(type_of_worker_id)
+REFERENCES type_of_worker (id);
 
 -- client
 ALTER TABLE client ADD CONSTRAINT client_user FOREIGN KEY(user_id)
