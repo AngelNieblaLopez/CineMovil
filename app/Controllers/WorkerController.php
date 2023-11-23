@@ -13,7 +13,7 @@ class WorkerController extends BaseController
 {
     protected $roleModel;
     protected $authModel;
-    protected $typeOfWorker;
+    protected $typeOfWorkerModel;
     protected $userModel;
     protected $workerModel;
     protected $session;
@@ -26,7 +26,7 @@ class WorkerController extends BaseController
         $this->db = \Config\Database::connect();
         $this->roleModel = model('RoleModel');
         $this->authModel = model('AuthModel');
-        $this->typeOfWorker = model('TypeOfWorkerModel');
+        $this->typeOfWorkerModel = model('TypeOfWorkerModel');
         $this->userModel = model('UserModel');
         $this->workerModel = model('WorkerModel');
     }
@@ -37,7 +37,7 @@ class WorkerController extends BaseController
         $workers = $this->userModel
         ->join('role', 'role.id = user.role_id')
         ->join('worker', 'worker.user_id = user.id')
-        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_seller_id')
+        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->orderBy('user.id', 'asc')->findAll();
         return view('workers/index', compact('workers'));
     }
@@ -48,7 +48,7 @@ class WorkerController extends BaseController
         $user = $this->userModel
         ->join('role', 'role.id = user.role_id')
         ->join('worker', 'worker.user_id = user.id')
-        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_seller_id')
+        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->find($id);
 
         if($user) {
@@ -76,7 +76,8 @@ class WorkerController extends BaseController
             "second_name" => $this->request->getVar('secondName'),
             "last_name" => $this->request->getVar('lastName'),
             "second_last_name" => $this->request->getVar('secondLastName'),
-            "role_Id" => $this->request->getVar('roleId'),
+            // "role_Id" => $this->request->getVar('roleId'),
+            "role_Id" => 1,
             "email" => $this->request->getVar('email'),
         ]);
 
@@ -84,7 +85,7 @@ class WorkerController extends BaseController
 
         $this->workerModel->save([
             "user_id" => $userId,
-            "type_of_seller_id" => $this->request->getVar('typeOfSellerId'),
+            "type_of_worker_id" => $this->request->getVar('typeOfWorkerId'),
         ]);
 
         session()->setFlashdata("success", "Se agregó un nuevo usuario");
@@ -96,7 +97,7 @@ class WorkerController extends BaseController
         $user = $this->userModel
         ->join('role', 'role.id = user.role_id')
         ->join('worker', 'worker.user_id = user.id')
-        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_seller_id')
+        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->find($id);
         if($user) {
             return view('workers/edit', compact("user"));
@@ -109,13 +110,14 @@ class WorkerController extends BaseController
     public function update($id = null) {
 
         try {
-        define("ROLE_ID", $this->request->getVar('role_id'));
+        define("roleId", $this->request->getVar('roleId'));
+        define("typeOfWorkerId", $this->request->getVar('typeOfWorkerId'));
 
         $this->db->transException(true)->transStart();
-        $whereWorkerFetch = "status = 1";
+        $whereWorkerFetch = "worker.status = 1";
         $worker = $this->workerModel
         ->select('u.auth_id, w.user_id')
-        ->join('type_of_seller as tof', 'tof.id = worker.type_of_seller_id')
+        ->join('type_of_worker as tof', 'tof.id = worker.type_of_worker_id')
         ->join('user as u', 'u.id = worker.user_id')
         ->join('auth as a', 'a.id = u.auth_id')
         ->join('role as r', 'r.id = u.role_id')
@@ -125,21 +127,21 @@ class WorkerController extends BaseController
             throw new Exception("Usuario no encontrado");
         }
 
-        $roleFinded =  $this->roleModel
+        $role =  $this->roleModel
         ->where("status = 1")
-        ->find(ROLE_ID);
+        ->find(roleId);
 
-        if(!$roleFinded) {
+        if(!$role) {
             throw new Exception("Role no encontrado");
         }
 
 
-        $roleFinded =  $this->roleModel
+        $typeOfWorker =  $this->typeOfWorkerModel
         ->where("status = 1")
-        ->find(ROLE_ID);
+        ->find(typeOfWorkerId);
 
-        if(!$roleFinded) {
-            throw new Exception("Role no encontrado");
+        if(!$typeOfWorker) {
+            throw new Exception("Tipo de trabajador no encontrado");
         }
 
         /* UPDATE */
@@ -155,14 +157,13 @@ class WorkerController extends BaseController
             "second_name" => $this->request->getVar('secondName'),
             "last_name" => $this->request->getVar('lastName'),
             "second_last_name" => $this->request->getVar('secondLastName'),
-            "role_Id" => ROLE_ID,
+            "role_Id" => roleId,
             "email" => $this->request->getVar('email'),
         ]);
 
         $this->workerModel->save([
             "id" => $id,
-            "user_id" => $worker->user_id,
-            "type_of_seller_id" => $this->request->getVar('typeOfSellerId'),
+            "type_of_worker_id" => $this->request->getVar('typeOfWorkerId'),
         ]);
 
         $this->db->transComplete();
