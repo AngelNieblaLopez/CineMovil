@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TypeOfWokerModel extends Model
+class TypeOfWorkerModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'type_of_woker';
+    protected $table            = 'type_of_worker';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';

@@ -76,8 +76,7 @@ class WorkerController extends BaseController
             "second_name" => $this->request->getVar('secondName'),
             "last_name" => $this->request->getVar('lastName'),
             "second_last_name" => $this->request->getVar('secondLastName'),
-            // "role_Id" => $this->request->getVar('roleId'),
-            "role_Id" => 1,
+            "role_id" => $this->request->getVar('roleId'),
             "email" => $this->request->getVar('email'),
         ]);
 
@@ -109,14 +108,14 @@ class WorkerController extends BaseController
 
     public function update($id = null) {
 
-        try {
+      /*   try { */
         define("roleId", $this->request->getVar('roleId'));
         define("typeOfWorkerId", $this->request->getVar('typeOfWorkerId'));
 
         $this->db->transException(true)->transStart();
         $whereWorkerFetch = "worker.status = 1";
         $worker = $this->workerModel
-        ->select('u.auth_id, w.user_id')
+        ->select('u.auth_id, worker.user_id')
         ->join('type_of_worker as tof', 'tof.id = worker.type_of_worker_id')
         ->join('user as u', 'u.id = worker.user_id')
         ->join('auth as a', 'a.id = u.auth_id')
@@ -146,7 +145,7 @@ class WorkerController extends BaseController
 
         /* UPDATE */
         $this->authModel->save([
-            "id" => $worker->auth_id,
+            "id" => $worker["auth_id"],
             "password" => $this->request->getVar('password'),
         ]);
 
@@ -169,11 +168,11 @@ class WorkerController extends BaseController
         $this->db->transComplete();
         session()->setFlashdata('success', "Se modificaron los datos del usuario");
         return redirect()->to(base_url('/workers'));
-    } catch(DatabaseException $e) {
+/*     } catch(DatabaseException $e) {
         // error
         $this->db->transRollback();
         return session()->setFlashdata('failed', 'Trabajador no encontrado');
-    }
+    } */
 
     }
 
