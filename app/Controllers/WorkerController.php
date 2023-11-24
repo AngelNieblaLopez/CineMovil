@@ -33,7 +33,7 @@ class WorkerController extends BaseController
 
     public function index()
     {
-        $whereFetch = "status = 1";
+        $whereFetch = "worker.status = 1";
         $workers = $this->userModel
         ->join('role', 'role.id = user.role_id')
         ->join('worker', 'worker.user_id = user.id')
@@ -109,8 +109,19 @@ class WorkerController extends BaseController
     public function update($id = null) {
 
       /*   try { */
-        define("roleId", $this->request->getVar('roleId'));
-        define("typeOfWorkerId", $this->request->getVar('typeOfWorkerId'));
+        $roleId = $this->request->getVar('roleId');
+        $typeOfWorkerId = $this->request->getVar('typeOfWorkerId');
+        $password = $this->request->getVar('password');
+        $firstName = $this->request->getVar('firstName');
+        $secondName = $this->request->getVar('secondName');
+        $lastName = $this->request->getVar('lastName');
+        $secondLastName = $this->request->getVar('secondLastName');
+        $email = $this->request->getVar('email');
+
+        
+        if($roleId || $typeOfWorkerId || $password || $firstName || $secondName || $lastName || $email) {
+            throw new Exception("Parámetro sin valor");
+        }
 
         $this->db->transException(true)->transStart();
         $whereWorkerFetch = "worker.status = 1";
@@ -128,7 +139,7 @@ class WorkerController extends BaseController
 
         $role =  $this->roleModel
         ->where("status = 1")
-        ->find(roleId);
+        ->find($roleId);
 
         if(!$role) {
             throw new Exception("Role no encontrado");
@@ -137,7 +148,7 @@ class WorkerController extends BaseController
 
         $typeOfWorker =  $this->typeOfWorkerModel
         ->where("status = 1")
-        ->find(typeOfWorkerId);
+        ->find($typeOfWorkerId);
 
         if(!$typeOfWorker) {
             throw new Exception("Tipo de trabajador no encontrado");
@@ -146,23 +157,23 @@ class WorkerController extends BaseController
         /* UPDATE */
         $this->authModel->save([
             "id" => $worker["auth_id"],
-            "password" => $this->request->getVar('password'),
+            "password" => $password,
         ]);
 
 
         $this->userModel->save([
-            "id" => $worker->id,
-            "first_name" =>$this->request->getVar('firstName'),
-            "second_name" => $this->request->getVar('secondName'),
-            "last_name" => $this->request->getVar('lastName'),
-            "second_last_name" => $this->request->getVar('secondLastName'),
-            "role_Id" => roleId,
-            "email" => $this->request->getVar('email'),
+            "id" => $worker["id"],
+            "first_name" =>$firstName,
+            "second_name" => $secondName,
+            "last_name" => $lastName,
+            "second_last_name" => $secondLastName,
+            "role_Id" => $roleId,
+            "email" => $email,
         ]);
 
         $this->workerModel->save([
             "id" => $id,
-            "type_of_worker_id" => $this->request->getVar('typeOfWorkerId'),
+            "type_of_worker_id" => $typeOfWorkerId,
         ]);
 
         $this->db->transComplete();
@@ -178,8 +189,14 @@ class WorkerController extends BaseController
 
     public function delete($id = null) {
 
-        $whereWorkerFetch = "status = 1";
-        $worker = $this->workerModel->where($whereWorkerFetch)->find($id);
+        $whereWorkerFetch = "worker.status = 1 AND user.status = 1";
+        $worker = $this->workerModel
+        ->where($whereWorkerFetch)
+        ->join("user", "user.id = worker.user.id")
+        ->find($id);
+
+        
+
 
 
         $this->workerModel->save([

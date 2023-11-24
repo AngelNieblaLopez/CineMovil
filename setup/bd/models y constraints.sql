@@ -56,8 +56,8 @@ CREATE TABLE module (
 
 CREATE TABLE role_module (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    role_id INT,
-    module_id INT,
+    role_id INT NOT NULL,
+    module_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -100,7 +100,7 @@ CREATE TABLE type_room (
 
 CREATE TABLE seat_of_room (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    room_id INT,
+    room_id INT NOT NULL,
     name VARCHAR(64),
     available bit NOT NULL,
     position_of_seat_id INT NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE `function` (
 
 CREATE TABLE seat_of_function (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    seat_of_room_id INT,
+    seat_of_room_id INT NOT NULL,
     price DECIMAL(10,3),
     function_id INT NOT NULL,
     
@@ -217,7 +217,7 @@ CREATE TABLE sale_detail (
 
 CREATE TABLE worker (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
+    user_id INT NOT NULL,
     type_of_worker_id INT NOT NULL,
     
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -227,7 +227,7 @@ CREATE TABLE worker (
 
 CREATE TABLE client (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
+    user_id INT NOT NULL,
     
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

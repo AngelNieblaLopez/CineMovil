@@ -1,28 +1,28 @@
+
 <?= $this->extend('layouts/base_layout');
-$this->section('title'); ?> Listado de usuarios <?= $this->endSection(); ?>
+$this->section('title'); ?> Listado de trabajadores <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
 
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('users/new') ?>" class="btn btn-primary">Nuevo usuario</a>
+            <a href="<?= base_url('workers/new') ?>" class="btn btn-primary">Nuevo trabajador</a>
         </div>
     </div>
 </div>
-
 
 <div class="row py-2">
     <div class="col-xl-12">
         <?php
         if (session()->getFlashdata('success')) : ?>
             <div class="alert alert-success alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert">&times;</button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 <?= session()->getFlashdata('success') ?>
             </div>
         <?php elseif (session()->getFlashdata('failed')) : ?>
             <div class="alert alert-danger alert-sismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert">&times;</button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 <?= session()->getFlashdata('failed'); ?>
             </div>
         <?php endif; ?>
@@ -36,7 +36,8 @@ $this->section('title'); ?> Listado de usuarios <?= $this->endSection(); ?>
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Nombre</th>
+                            <th>Primer Nombre</th>
+                            <th>Segundo Nombre</th>
                             <th>Apellido paterno</th>
                             <th>Apellido materno</th>
                             <th>Acción</th>
@@ -44,19 +45,20 @@ $this->section('title'); ?> Listado de usuarios <?= $this->endSection(); ?>
                     </thead>
                     <tbody>
                         <?php
-                        if (count($users) > 0) :
-                            foreach ($users as $user) : ?>
+                        if (count($workers) > 0) :
+                            foreach ($workers as $worker) : ?>
                                 <tr>
-                                    <td> <?= $user['id'] ?> </td>
-                                    <td> <?= $user['nombre'] ?> </td>
-                                    <td> <?= $user['apellido_paterno'] ?> </td>
-                                    <td> <?= $user['apellido_materno'] ?> </td>
+                                    <td> <?= $worker['id'] ?> </td>
+                                    <td> <?= $worker['first_name'] ?> </td>
+                                    <td> <?= $worker['second_name'] ?> </td>
+                                    <td> <?= $worker['last_name'] ?> </td>
+                                    <td> <?= $worker['second_last_name'] ?> </td>
                                     <td class="d-flex">
-                                        <a href="<?= base_url("users/" . $user["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
-                                        <a href="<?= base_url("users/edit/" . $user["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                        <form class="display-none" method="post" action="<?= base_url("users/" . $user["id"]) ?>" id="deleteUser<?= $user['id'] ?>">
+                                        <a href="<?= base_url("workers/" . $worker["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
+                                        <a href="<?= base_url("workers/edit/" . $worker["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
+                                        <form class="display-none" method="post" action="<?= base_url("workers/" . $worker["id"]) ?>" id="deleteUser<?= $worker['id'] ?>">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <a href="javascript:void(0)" onclick="deleteUser('deleteUser<?= $user['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
+                                            <a href="javascript:void(0)" onclick="deleteUser('deleteUser<?= $worker['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
                                         </form>
                                     </td>
                                 </tr>

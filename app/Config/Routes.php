@@ -25,10 +25,13 @@ $routes->delete('api/roles/v1/(:num)', "RoleController::delete/$1");
 
 
 //RUTAS Worker
-$routes->get('users', 'WorkerController::index');
-$routes->get('users/new', "WorkerController::new");
-$routes->post('users', "WorkerController::create");
-$routes->get('users/(:num)', "WorkerController::show/$1");
-$routes->get('users/edit/(:num)', "WorkerController::edit/$1");
-$routes->put('users/(:num)', "WorkerController::update/$1");
-$routes->delete('users/(:num)', "WorkerController::delete/$1");
+//Pages
+$routes->get('workers', 'WorkerController::index');
+$routes->get('workers/new', "WorkerController::new");
+$routes->get('workers/(:num)', "WorkerController::show/$1");
+$routes->get('workers/edit/(:num)', "WorkerController::edit/$1");
+
+//api
+$routes->post('workers', "WorkerController::create");
+$routes->put('workers/(:num)', "WorkerController::update/$1");
+$routes->delete('workers/(:num)', "WorkerController::delete/$1");
