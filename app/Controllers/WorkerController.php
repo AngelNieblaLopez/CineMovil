@@ -59,7 +59,9 @@ class WorkerController extends BaseController
     }
 
     public function new() {
-        return view('workers/new');
+        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+        $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+        return view('workers/new', compact("roles", "typeOfWorkers"));
     }
 
     public function create() {
@@ -76,7 +78,7 @@ class WorkerController extends BaseController
             "second_name" => $this->request->getVar('secondName'),
             "last_name" => $this->request->getVar('lastName'),
             "second_last_name" => $this->request->getVar('secondLastName'),
-            "role_id" => $this->request->getVar('roleId'),
+            "role_id" => (int)$this->request->getVar('roleId'),
             "email" => $this->request->getVar('email'),
         ]);
 
@@ -84,7 +86,7 @@ class WorkerController extends BaseController
 
         $this->workerModel->save([
             "user_id" => $userId,
-            "type_of_worker_id" => $this->request->getVar('typeOfWorkerId'),
+            "type_of_worker_id" => (int)$this->request->getVar('typeOfWorkerId'),
         ]);
 
         session()->setFlashdata("success", "Se agregó un nuevo usuario");
