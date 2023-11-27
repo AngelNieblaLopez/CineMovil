@@ -34,9 +34,9 @@ class WorkerController extends BaseController
     public function index()
     {
         $whereFetch = "worker.status = 1";
-        $workers = $this->userModel
+        $workers = $this->workerModel
+        ->join('user', 'worker.user_id = user.id')
         ->join('role', 'role.id = user.role_id')
-        ->join('worker', 'worker.user_id = user.id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->orderBy('user.id', 'asc')->findAll();
         return view('workers/index', compact('workers'));
@@ -44,15 +44,15 @@ class WorkerController extends BaseController
 
 
     public function show($id = null) {
-        $whereFetch = "status = 1";
-        $user = $this->userModel
+        $whereFetch = "worker.status = 1";
+        $worker = $this->workerModel
+        ->join('user', 'worker.user_id = user.id')
         ->join('role', 'role.id = user.role_id')
-        ->join('worker', 'worker.user_id = user.id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->find($id);
 
-        if($user) {
-            return view('workers/show', compact('user'));
+        if($worker) {
+            return view('workers/show', compact('worker'));
         } else {
             return redirect()->to(site_url('/workers'));
         }
@@ -94,14 +94,14 @@ class WorkerController extends BaseController
     }
 
     public function edit($id = null) {
-        $whereFetch = "status = 1";
-        $user = $this->userModel
+        $whereFetch = "worker.status = 1";
+        $worker = $this->workerModel
         ->join('role', 'role.id = user.role_id')
-        ->join('worker', 'worker.user_id = user.id')
+        ->join('user', 'worker.user_id = user.id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->find($id);
-        if($user) {
-            return view('workers/edit', compact("user"));
+        if($worker) {
+            return view('workers/edit', compact("worker"));
         } else {
             session()->setFlashdata('failed', 'Trabajador no encontrado');
             return redirect()->to('/workers');

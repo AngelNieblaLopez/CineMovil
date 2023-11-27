@@ -88,14 +88,34 @@ $this->section('title') ?> Crear nuevo trabajador
 </div>
 <script>
     $(document).ready(function () {
+        let roles = <?= json_encode($roles) ?>;
+        let typeOfWorkers = <?= json_encode($typeOfWorkers) ?>;
+
+
+        if (roles.length !== 0) {
+            $('#roleId').val(roles[0].id);
+            $("#role option").each((idx, option) => {
+                if (option.value == roles[0].id) {
+                    option.selected = true
+                }
+            });
+        }
+
+        if (typeOfWorkers.length !== 0) {
+            $('#typeOfWorkerId').val(typeOfWorkers[0].id);
+            $("#role option").each((idx, option) => {
+                if (option.value == typeOfWorkers[0].id) {
+                    option.selected = true
+                }
+            })
+        }
+
         $('#role').change(function () {
-            var valorSeleccionado = $(this).val();
-            $('#roleId').val(valorSeleccionado);
+            $('#roleId').val($(this).val());
         });
 
         $('#typeOfWorker').change(function () {
-            var valorSeleccionado = $(this).val();
-            $('#typeOfWorkerId').val(valorSeleccionado);
+            $('#typeOfWorkerId').val($(this).val());
         });
     });
 </script>
