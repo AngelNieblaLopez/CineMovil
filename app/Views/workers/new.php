@@ -7,7 +7,7 @@ $this->section('title') ?> Crear nuevo trabajador
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('users') ?>" class="btn btn-primary">Regresar a trabajadores</a>
+            <a href="<?= base_url('workers') ?>" class="btn btn-primary">Regresar a trabajadores</a>
         </div>
 
         <div class="row">
@@ -106,6 +106,7 @@ $this->section('title') ?> Crear nuevo trabajador
         }
 
         $('#role').change(function() {
+            console.log(roles)
             $('#roleId').val($(this).val());
         });
 

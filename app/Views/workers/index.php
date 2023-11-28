@@ -28,7 +28,7 @@ $this->section('title'); ?> Listado de trabajadores <?= $this->endSection(); ?>
         <?php endif; ?>
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Usuarios</h5>
+                <h5 class="card-title">Trabajadores</h5>
             </div>
 
             <div class="card-body">
