@@ -4,8 +4,7 @@ USE CINE_MOVIL;
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     auth_id INT NOT NULL,
-    first_name VARCHAR(64) NOT NULL,
-    second_name VARCHAR(64) NOT NULL,
+    name VARCHAR(124) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
     second_last_name VARCHAR(64) NOT NULL,
     role_id INT NOT NULL,

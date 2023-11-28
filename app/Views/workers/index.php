@@ -36,8 +36,7 @@ $this->section('title'); ?> Listado de trabajadores <?= $this->endSection(); ?>
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Primer Nombre</th>
-                            <th>Segundo Nombre</th>
+                            <th>Nombre</th>
                             <th>Apellido paterno</th>
                             <th>Apellido materno</th>
                             <th>Acción</th>
@@ -49,8 +48,7 @@ $this->section('title'); ?> Listado de trabajadores <?= $this->endSection(); ?>
                             foreach ($workers as $worker) : ?>
                                 <tr>
                                     <td> <?= $worker['id'] ?> </td>
-                                    <td> <?= $worker['first_name'] ?> </td>
-                                    <td> <?= $worker['second_name'] ?> </td>
+                                    <td> <?= $worker['name'] ?> </td>
                                     <td> <?= $worker['last_name'] ?> </td>
                                     <td> <?= $worker['second_last_name'] ?> </td>
                                     <td class="d-flex">

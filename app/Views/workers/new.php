@@ -21,12 +21,8 @@ $this->section('title') ?> Crear nuevo trabajador
                                 <div class="card-body">
                                     <h5 class="card-title">Crear trabajador</h5>
                                     <div class="form-group mb-3">
-                                        <label clas="form-label">Primer nombre</label>
-                                        <input type="text" class="form-control" name="firstName" placeholder="Proporcione el primer nombre ">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label clas="form-label">Segundo nombre</label>
-                                        <input type="text" class="form-control" name="secondName" placeholder="Proporcione el segundo nombre ">
+                                        <label clas="form-label">Nombre</label>
+                                        <input type="text" class="form-control" name="name" placeholder="Proporcione el nombre ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Apellido paterno</label>
@@ -38,7 +34,7 @@ $this->section('title') ?> Crear nuevo trabajador
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">email</label>
-                                        <input type="password" class="form-control" name="email" placeholder="Proporcione el email ">
+                                        <input type="email" class="form-control" name="email" placeholder="Proporcione el email ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Contraseña</label>

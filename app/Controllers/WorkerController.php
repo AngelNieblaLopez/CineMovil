@@ -36,9 +36,8 @@ class WorkerController extends BaseController
         $whereFetch = "worker.status = 1";
         $workers = $this->workerModel
         ->select("
-        worker.id, 
-        user.first_name,  
-        user.second_name, 
+        worker.id,   
+        user.name, 
         user.last_name, 
         user.second_last_name") 
         ->join('user', 'worker.user_id = user.id')
@@ -55,6 +54,15 @@ class WorkerController extends BaseController
         $whereFetch = "worker.status = 1";
         $worker = $this->workerModel
         ->join('user', 'worker.user_id = user.id')
+        ->select("
+        worker.id,   
+        user.name, 
+        user.last_name, 
+        user.second_last_name,
+        user.email,
+        auth.password,
+        user.role_id,
+        worker.type_of_worker_id") 
         ->join('auth', 'auth.id = user.auth_id')
         ->join('role', 'role.id = user.role_id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
@@ -86,8 +94,7 @@ class WorkerController extends BaseController
 
         $this->userModel->save([
             "auth_id" => $authId,
-            "first_name" =>$this->request->getVar('firstName'),
-            "second_name" => $this->request->getVar('secondName'),
+            "name" =>$this->request->getVar('name'),
             "last_name" => $this->request->getVar('lastName'),
             "second_last_name" => $this->request->getVar('secondLastName'),
             "role_id" => (int)$this->request->getVar('roleId'),
@@ -109,9 +116,8 @@ class WorkerController extends BaseController
         $whereFetch = "worker.status = 1";
         $worker = $this->workerModel
         ->select("
-        worker.id, 
-        user.first_name,  
-        user.second_name, 
+        worker.id,   
+        user.name, 
         user.last_name, 
         user.second_last_name,
         user.email,
@@ -141,8 +147,7 @@ class WorkerController extends BaseController
         $roleId = $this->request->getVar('roleId');
         $typeOfWorkerId = $this->request->getVar('typeOfWorkerId');
         $password = $this->request->getVar('password');
-        $firstName = $this->request->getVar('firstName');
-        $secondName = $this->request->getVar('secondName');
+        $name = $this->request->getVar('name');
         $lastName = $this->request->getVar('lastName');
         $secondLastName = $this->request->getVar('secondLastName');
         $email = $this->request->getVar('email');
@@ -188,8 +193,7 @@ class WorkerController extends BaseController
 
         $this->userModel->save([
             "id" => (int)$worker["user_id"],
-            "first_name" =>$firstName,
-            "second_name" => $secondName,
+            "name" => $name,
             "last_name" => $lastName,
             "second_last_name" => $secondLastName,
             "role_id" => (int)$roleId,

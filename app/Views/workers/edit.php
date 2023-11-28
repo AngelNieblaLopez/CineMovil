@@ -12,7 +12,7 @@ $this->section('title') ?> Crear trabajador
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('workers/'.$worker["id"]) ?>" method="POST">
+                <form action="<?= base_url('workers/' . $worker["id"]) ?>" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">
@@ -21,17 +21,12 @@ $this->section('title') ?> Crear trabajador
                                 <div class="card-body">
                                     <h5 class="card-title">Editar datos del trabajador</h5>
                                     <div class="form-group mb-3">
-                                        <label clas="form-label">Primer nombre</label>
-                                        <input type="text" class="form-control" name="firstName" placeholder="Proporcione el primer nombre" value="<?php if ($worker['first_name']) : echo $worker['first_name'];
-                                                                                                                                                    else : set_value('first_name');
-                                                                                                                                                    endif ?>">
+                                        <label clas="form-label">Nombre</label>
+                                        <input type="text" class="form-control" name="name" placeholder="Proporcione el nombre" value="<?php if ($worker['name']) : echo $worker['name'];
+                                                                                                                                            else : set_value('name');
+                                                                                                                                            endif ?>">
                                     </div>
-                                    <div class=" form-group mb-3">
-                                        <label clas="form-label">Segundo nombre</label>
-                                        <input type="text" class="form-control" name="secondName" placeholder="Proporcione el segundo nombre " value="<?php if ($worker['second_name']) : echo $worker['second_name'];
-                                                                                                                                                        else : set_value('second_name');
-                                                                                                                                                        endif ?>">
-                                    </div>
+
                                     <div class=" form-group mb-3">
                                         <label clas="form-label">Apellido paterno</label>
                                         <input type="text" class="form-control" name="lastName" placeholder="Proporcione el apellido paterno" value="<?php if ($worker['last_name']) : echo $worker['last_name'];
@@ -46,9 +41,9 @@ $this->section('title') ?> Crear trabajador
                                     </div>
                                     <div class=" form-group mb-3">
                                         <label clas="form-label">email</label>
-                                        <input type="password" class="form-control" name="email" placeholder="Proporcione el email" value="<?php if ($worker['email']) : echo $worker['email'];
-                                                                                                                                            else : set_value('email');
-                                                                                                                                            endif ?>">
+                                        <input type="email" class="form-control" name="email" placeholder="Proporcione el email" value="<?php if ($worker['email']) : echo $worker['email'];
+                                                                                                                                        else : set_value('email');
+                                                                                                                                        endif ?>">
                                     </div>
                                     <div class=" form-group mb-3">
                                         <label clas="form-label">Contraseña</label>
@@ -87,10 +82,11 @@ $this->section('title') ?> Crear trabajador
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <script>
     $(document).ready(function() {

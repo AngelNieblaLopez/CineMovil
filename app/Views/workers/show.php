@@ -7,7 +7,7 @@ $this->section('title') ?> Crear nuevo trabajador
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('workers') ?>" class="btn btn-primary">Regresar a trabajador</a>
+            <a href="<?= base_url('workers') ?>" class="btn btn-primary">Regresar a trabajadores</a>
         </div>
     </div>
 
@@ -16,16 +16,11 @@ $this->section('title') ?> Crear nuevo trabajador
             <div class="col-sm-12">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h5 class="card-title">Crear trabajador</h5>
+                        <h5 class="card-title">Detalle trabajador</h5>
                         <div class="form-group mb-3">
-                            <label clas="form-label">Primer nombre</label>
-                            <input type="text" class="form-control" disabled name="firstName"
-                                placeholder="Proporcione el primer nombre " value="<?= trim($worker["first_name"])?>">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label clas="form-label">Segundo nombre</label>
-                            <input type="text" class="form-control" disabled name="secondName"
-                                placeholder="Proporcione el segundo nombre " value="<?= trim($worker["second_name"])?>">
+                            <label clas="form-label">Name</label>
+                            <input type="text" class="form-control" disabled name="name"
+                                placeholder="Proporcione el nombre " value="<?= trim($worker["name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Apellido paterno</label>
@@ -39,7 +34,7 @@ $this->section('title') ?> Crear nuevo trabajador
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">email</label>
-                            <input type="password" class="form-control" disabled name="email"
+                            <input type="email" class="form-control" disabled name="email"
                                 placeholder="Proporcione el email " value="<?= trim($worker["email"])?>">
                         </div>
                         <div class="form-group mb-3">
