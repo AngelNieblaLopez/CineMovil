@@ -271,9 +271,10 @@ CREATE TABLE payment_status (
 
 CREATE TABLE config (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    enviroment_server_id INT NOT NULL,
     name varchar(255) NOT NULL,
-
+    
+    enviroment_server_id INT NOT NULL,
+    default_customer_role_id INT NOT NULL,
     app_worker_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -420,3 +421,9 @@ REFERENCES payment_status (id);
 
 ALTER TABLE config ADD CONSTRAINT config_enviroment_server FOREIGN KEY(enviroment_server_id)
 REFERENCES enviroment_server (id);
+
+ALTER TABLE config ADD CONSTRAINT config_role FOREIGN KEY(default_customer_role_id)
+REFERENCES `role` (id);
+
+ALTER TABLE config ADD CONSTRAINT config_worker FOREIGN KEY(app_worker_id)
+REFERENCES worker (id);
