@@ -55,12 +55,16 @@ class WorkerController extends BaseController
         $whereFetch = "worker.status = 1";
         $worker = $this->workerModel
         ->join('user', 'worker.user_id = user.id')
+        ->join('auth', 'auth.id = user.auth_id')
         ->join('role', 'role.id = user.role_id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->find((int)$id);
 
+        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+        $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+
         if($worker) {
-            return view('workers/show', compact('worker'));
+            return view('workers/show', compact('worker', "roles", "typeOfWorkers"));
         } else {
             return redirect()->to(site_url('/workers'));
         }
@@ -97,19 +101,34 @@ class WorkerController extends BaseController
             "type_of_worker_id" => (int)$this->request->getVar('typeOfWorkerId'),
         ]);
 
-        session()->setFlashdata("success", "Se agregó un nuevo usuario");
+        session()->setFlashdata("success", "Se agregó un nuevo trabajador");
         return redirect()->to(site_url('/workers'));
     }
 
     public function edit($id = null) {
         $whereFetch = "worker.status = 1";
         $worker = $this->workerModel
-        ->join('role', 'role.id = user.role_id')
+        ->select("
+        worker.id, 
+        user.first_name,  
+        user.second_name, 
+        user.last_name, 
+        user.second_last_name,
+        user.email,
+        auth.password,
+        user.role_id,
+        worker.type_of_worker_id") 
         ->join('user', 'worker.user_id = user.id')
+        ->join('auth', 'auth.id = user.auth_id')
+        ->join('role', 'role.id = user.role_id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
-        ->where($whereFetch)->find($id);
+        ->where($whereFetch)->find((int)$id);
+
+        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+        $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+
         if($worker) {
-            return view('workers/edit', compact("worker"));
+            return view('workers/edit', compact("worker", "roles", "typeOfWorkers"));
         } else {
             session()->setFlashdata('failed', 'Trabajador no encontrado');
             return redirect()->to('/workers');
@@ -128,12 +147,8 @@ class WorkerController extends BaseController
         $secondLastName = $this->request->getVar('secondLastName');
         $email = $this->request->getVar('email');
 
-        
-        if($roleId || $typeOfWorkerId || $password || $firstName || $secondName || $lastName || $email) {
-            throw new Exception("Parámetro sin valor");
-        }
 
-        $this->db->transException(true)->transStart();
+        // $this->db->transException(true)->transStart();
         $whereWorkerFetch = "worker.status = 1";
         $worker = $this->workerModel
         ->select('u.auth_id, worker.user_id')
@@ -144,7 +159,7 @@ class WorkerController extends BaseController
         ->where($whereWorkerFetch)->find($id);
 
         if(!$worker) {
-            throw new Exception("Usuario no encontrado");
+            throw new Exception("Trabajador no encontrado");
         }
 
         $role =  $this->roleModel
@@ -166,18 +181,18 @@ class WorkerController extends BaseController
 
         /* UPDATE */
         $this->authModel->save([
-            "id" => $worker["auth_id"],
+            "id" => (int)$worker["auth_id"],
             "password" => $password,
         ]);
 
 
         $this->userModel->save([
-            "id" => $worker["id"],
+            "id" => (int)$worker["user_id"],
             "first_name" =>$firstName,
             "second_name" => $secondName,
             "last_name" => $lastName,
             "second_last_name" => $secondLastName,
-            "role_Id" => $roleId,
+            "role_id" => (int)$roleId,
             "email" => $email,
         ]);
 
@@ -186,8 +201,8 @@ class WorkerController extends BaseController
             "type_of_worker_id" => $typeOfWorkerId,
         ]);
 
-        $this->db->transComplete();
-        session()->setFlashdata('success', "Se modificaron los datos del usuario");
+        // $this->db->transComplete();
+        session()->setFlashdata('success', "Se modificaron los datos del trabajador");
         return redirect()->to(base_url('/workers'));
 /*     } catch(DatabaseException $e) {
         // error
@@ -215,7 +230,7 @@ class WorkerController extends BaseController
         ]);
 
 
-        session()->setFlashdata('success', 'Usuario eliminado');
+        session()->setFlashdata('success', 'Trabajador eliminado');
         return redirect()->to(base_url('/workers'));
     }
     

@@ -20,22 +20,22 @@ $this->section('title') ?> Crear nuevo trabajador
                         <div class="form-group mb-3">
                             <label clas="form-label">Primer nombre</label>
                             <input type="text" class="form-control" disabled name="firstName"
-                                placeholder="Proporcione el primer nombre " value="<?= trim($worker["firstName"])?>">
+                                placeholder="Proporcione el primer nombre " value="<?= trim($worker["first_name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Segundo nombre</label>
                             <input type="text" class="form-control" disabled name="secondName"
-                                placeholder="Proporcione el segundo nombre " value="<?= trim($worker["secondName"])?>">
+                                placeholder="Proporcione el segundo nombre " value="<?= trim($worker["second_name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Apellido paterno</label>
                             <input type="text" class="form-control" disabled name="lastName"
-                                placeholder="Proporcione el apellido paterno " value="<?= trim($worker["lastName"])?>">
+                                placeholder="Proporcione el apellido paterno " value="<?= trim($worker["last_name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Apellido materno</label>
                             <input type="text" class="form-control" disabled name="secondLastName"
-                                placeholder="Proporcione el apellido materno " value="<?= trim($worker["secondLastName"])?>">
+                                placeholder="Proporcione el apellido materno " value="<?= trim($worker["second_last_name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">email</label>
@@ -69,13 +69,47 @@ $this->section('title') ?> Crear nuevo trabajador
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        let roles = <?= json_encode($roles) ?>;
+        let typeOfWorkers = <?= json_encode($typeOfWorkers) ?>;
+        let worker = <?= json_encode($worker) ?>;
+
+        if (roles.length !== 0) {
+            $('#roleId').val(worker.role_id);
+            $("#role option").each((idx, option) => {
+                option.selected = false;
+                if (option.value == worker.role_id) {
+                    option.selected = true;
+                }
+            });
+        }
+
+        if (typeOfWorkers.length !== 0) {
+            $('#typeOfWorkerId').val(worker.type_of_worker_id);
+            $("#typeOfWorker option").each((idx, option) => {
+                option.selected = false;
+                if (option.value == worker.type_of_worker_id) {
+                    option.selected = true;
+                }
+            })
+        }
+
+        $('#role').change(function () {
+            $('#roleId').val($(this).val());
+        });
+
+        $('#typeOfWorker').change(function () {
+            $('#typeOfWorkerId').val($(this).val());
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

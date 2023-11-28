@@ -22,39 +22,33 @@ $this->section('title') ?> Crear nuevo trabajador
                                     <h5 class="card-title">Crear trabajador</h5>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Primer nombre</label>
-                                        <input type="text" class="form-control" name="firstName"
-                                            placeholder="Proporcione el primer nombre ">
+                                        <input type="text" class="form-control" name="firstName" placeholder="Proporcione el primer nombre ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Segundo nombre</label>
-                                        <input type="text" class="form-control" name="secondName"
-                                            placeholder="Proporcione el segundo nombre ">
+                                        <input type="text" class="form-control" name="secondName" placeholder="Proporcione el segundo nombre ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Apellido paterno</label>
-                                        <input type="text" class="form-control" name="lastName"
-                                            placeholder="Proporcione el apellido paterno ">
+                                        <input type="text" class="form-control" name="lastName" placeholder="Proporcione el apellido paterno ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Apellido materno</label>
-                                        <input type="text" class="form-control" name="secondLastName"
-                                            placeholder="Proporcione el apellido materno ">
+                                        <input type="text" class="form-control" name="secondLastName" placeholder="Proporcione el apellido materno ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">email</label>
-                                        <input type="password" class="form-control" name="email"
-                                            placeholder="Proporcione el email ">
+                                        <input type="password" class="form-control" name="email" placeholder="Proporcione el email ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" name="password"
-                                            placeholder="Proporcione la contraseña ">
+                                        <input type="password" class="form-control" name="password" placeholder="Proporcione la contraseña ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Role</label>
                                         <select class="form-control" id="role">
                                             <option disabled value="0">- Seleccione -</option>
-                                            <?php foreach ($roles as $rol): ?>
+                                            <?php foreach ($roles as $rol) : ?>
                                                 <option value="<?= $rol['id'] ?>">
                                                     <?= $rol['name'] ?>
                                                 </option>
@@ -65,7 +59,7 @@ $this->section('title') ?> Crear nuevo trabajador
                                         <label class="form-label">Tipo de trabajador</label>
                                         <select class="form-control" id="typeOfWorker">
                                             <option disabled value="0">- Seleccione -</option>
-                                            <?php foreach ($typeOfWorkers as $typeOfWorker): ?>
+                                            <?php foreach ($typeOfWorkers as $typeOfWorker) : ?>
                                                 <option value="<?= $typeOfWorker['id'] ?>">
                                                     <?= $typeOfWorker['name'] ?>
                                                 </option>
@@ -87,14 +81,15 @@ $this->section('title') ?> Crear nuevo trabajador
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
+
         let roles = <?= json_encode($roles) ?>;
         let typeOfWorkers = <?= json_encode($typeOfWorkers) ?>;
 
 
         if (roles.length !== 0) {
             $('#roleId').val(roles[0].id);
-            $("#role option").each((idx, option) => {
+            $("#role option").each((_, option) => {
                 if (option.value == roles[0].id) {
                     option.selected = true
                 }
@@ -103,18 +98,18 @@ $this->section('title') ?> Crear nuevo trabajador
 
         if (typeOfWorkers.length !== 0) {
             $('#typeOfWorkerId').val(typeOfWorkers[0].id);
-            $("#role option").each((idx, option) => {
+            $("#typeOfWorker option").each((_, option) => {
                 if (option.value == typeOfWorkers[0].id) {
                     option.selected = true
                 }
             })
         }
 
-        $('#role').change(function () {
+        $('#role').change(function() {
             $('#roleId').val($(this).val());
         });
 
-        $('#typeOfWorker').change(function () {
+        $('#typeOfWorker').change(function() {
             $('#typeOfWorkerId').val($(this).val());
         });
     });
