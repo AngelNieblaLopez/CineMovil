@@ -35,11 +35,19 @@ class WorkerController extends BaseController
     {
         $whereFetch = "worker.status = 1";
         $workers = $this->workerModel
+        ->select("
+        worker.id, 
+        user.first_name,  
+        user.second_name, 
+        user.last_name, 
+        user.second_last_name") 
         ->join('user', 'worker.user_id = user.id')
         ->join('role', 'role.id = user.role_id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->orderBy('user.id', 'asc')->findAll();
         return view('workers/index', compact('workers'));
+
+            
     }
 
 
@@ -49,7 +57,7 @@ class WorkerController extends BaseController
         ->join('user', 'worker.user_id = user.id')
         ->join('role', 'role.id = user.role_id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
-        ->where($whereFetch)->find($id);
+        ->where($whereFetch)->find((int)$id);
 
         if($worker) {
             return view('workers/show', compact('worker'));
