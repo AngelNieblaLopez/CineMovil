@@ -12,7 +12,7 @@ $this->section('title') ?> Editar cine
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('cinemas/' . $cinema["id"]) ?>" method="POST">
+                <form action="<?= base_url('api/cinemas/v1/' . $cinema["id"]) ?>" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">
@@ -29,21 +29,21 @@ $this->section('title') ?> Editar cine
 
                                     <div class=" form-group mb-3">
                                         <label clas="form-label">Descripción ubicación</label>
-                                        <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación " value="<?php if ($cinema['location_description']) : echo $cinema['location_description'];
-                                                                                                                                                                        else : set_value('descriptionLocation');
+                                        <input type="text" class="form-control" name="locationDescription" placeholder="Proporcione descripción de locación " value="<?php if ($cinema['location_description']) : echo $cinema['location_description'];
+                                                                                                                                                                        else : set_value('locationDescription');
                                                                                                                                                                         endif ?>">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Lat</label>
-                                        <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine" value="<?php if ($cinema['location_lat']) : echo $cinema['location_lat'];
-                                                                                                                                                        else : set_value('latLocation');
+                                        <input type="text" class="form-control" name="locationLat" placeholder="Proporcione la latitud de cine" value="<?php if ($cinema['location_lat']) : echo $cinema['location_lat'];
+                                                                                                                                                        else : set_value('locationLat');
                                                                                                                                                         endif ?>">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label clas="form-label">long</label>
-                                        <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine" value="<?php if ($cinema['location_lat']) : echo $cinema['location_lat'];
-                                                                                                                                                            else : set_value('latLocation');
+                                        <input type="text" class="form-control" name="locationLongi" placeholder="Proporcione la longitud del cine" value="<?php if ($cinema['location_longi']) : echo $cinema['location_longi'];
+                                                                                                                                                            else : set_value('locationLongi');
                                                                                                                                                             endif ?>">
                                     </div>
 

@@ -19,21 +19,21 @@ $this->section('title') ?> Editar cine
                                 <h5 class="card-title">Detalle cine</h5>
                                 <div class="form-group mb-3">
                                     <label clas="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Proporcione descripción de nombre" value="<?= trim($cinema["name"])?>">
+                                    <input type="text" class="form-control" placeholder="Proporcione descripción de nombre" disabled value="<?= trim($cinema["name"])?>">
                                 </div>
 
                                 <div class=" form-group mb-3">
                                     <label clas="form-label">Descripción ubicación</label>
-                                    <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación " value="<?= trim($cinema["location_description"])?>">
+                                    <input type="text" class="form-control"  placeholder="Proporcione descripción de locación" disabled value="<?= trim($cinema["location_description"])?>">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label clas="form-label">Lat</label>
-                                    <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine" value="<?= trim($cinema["location_lat"])?>">
+                                    <input type="text" class="form-control" placeholder="Proporcione la latitud de cine" disabled value="<?= trim($cinema["location_lat"])?>">
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label clas="form-label">long</label>
-                                    <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine" value="<?= trim($cinema["location_longi"])?>">
+                                    <input type="text" class="form-control" placeholder="Proporcione la longitud del cine" disabled value="<?= trim($cinema["location_longi"])?>">
                                 </div>
                             </div>
                         </div>

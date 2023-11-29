@@ -26,15 +26,15 @@ $this->section('title') ?> Crear nuevo cine
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Descripción ubicación</label>
-                                        <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación ">
+                                        <input type="text" class="form-control" name="locationDescription" placeholder="Proporcione descripción de locación ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Lat</label>
-                                        <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine ">
+                                        <input type="text" class="form-control" name="locationLat" placeholder="Proporcione la latitud de cine ">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">long</label>
-                                        <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine">
+                                        <input type="text" class="form-control" name="locationLongi" placeholder="Proporcione la longitud del cine">
                                     </div>
 
                                     <button type="submit" class="btn btn-success">Guardar cine</button>
