@@ -12,7 +12,7 @@ $this->section('title') ?> Crear nuevo cine
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('cinemas') ?>" method="POST">
+                <form action="<?= base_url('api/cinemas/v1') ?>" method="POST">
                     <?= csrf_field() ?>
 
                     <div class="row">

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class WorkerModel extends Model
+class LocationModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'location';
@@ -13,7 +13,7 @@ class WorkerModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'description', 'long', 'lat', 'created_at', 'updated_at', 'status'];
+    protected $allowedFields    = ['id', 'description', 'longi', 'lat', 'created_at', 'updated_at', 'status'];
 
     // Dates
     protected $useTimestamps = false;

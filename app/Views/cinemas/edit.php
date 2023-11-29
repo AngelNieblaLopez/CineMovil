@@ -29,20 +29,20 @@ $this->section('title') ?> Editar cine
 
                                     <div class=" form-group mb-3">
                                         <label clas="form-label">Descripción ubicación</label>
-                                        <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación " value="<?php if ($cinema['description_location']) : echo $cinema['description_location'];
+                                        <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación " value="<?php if ($cinema['location_description']) : echo $cinema['location_description'];
                                                                                                                                                                         else : set_value('descriptionLocation');
                                                                                                                                                                         endif ?>">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Lat</label>
-                                        <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine" value="<?php if ($cinema['lat_location']) : echo $cinema['lat_location'];
+                                        <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine" value="<?php if ($cinema['location_lat']) : echo $cinema['location_lat'];
                                                                                                                                                         else : set_value('latLocation');
                                                                                                                                                         endif ?>">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label clas="form-label">long</label>
-                                        <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine" value="<?php if ($cinema['lat_location']) : echo $cinema['lat_location'];
+                                        <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine" value="<?php if ($cinema['location_lat']) : echo $cinema['location_lat'];
                                                                                                                                                             else : set_value('latLocation');
                                                                                                                                                             endif ?>">
                                     </div>

@@ -39,12 +39,12 @@ $routes->delete('workers/(:num)', "WorkerController::delete/$1");
 
 //Rjutas cinema
 
-$routes->get('cinemas', 'CiemaController::index');
-$routes->get('cinemas/new', "CiemaController::new");
-$routes->get('cinemas/(:num)', "CiemaController::show/$1");
-$routes->get('cinemas/edit/(:num)', "CiemaController::edit/$1");
+$routes->get('cinemas', 'CinemaController::index');
+$routes->get('cinemas/new', "CinemaController::new");
+$routes->get('cinemas/(:num)', "CinemaController::show/$1");
+$routes->get('cinemas/edit/(:num)', "CinemaController::edit/$1");
 
 //api
-$routes->post('api/cinemas/v1', "CiemaController::create");
-$routes->put('api/cinemas/v1/(:num)', "CiemaController::update/$1");
-$routes->delete('api/cinemas/v1/(:num)', "CiemaController::delete/$1");
+$routes->post('api/cinemas/v1', "CinemaController::create");
+$routes->put('api/cinemas/v1/(:num)', "CinemaController::update/$1");
+$routes->delete('api/cinemas/v1/(:num)', "CinemaController::delete/$1");

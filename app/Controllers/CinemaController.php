@@ -9,7 +9,7 @@ use Error;
 use Exception;
 use Predis\Connection\Cluster\RedisCluster;
 
-class WorkerController extends BaseController
+class CinemaController extends BaseController
 {
     protected $cinemaModel;
     protected $locationModel;
@@ -21,117 +21,89 @@ class WorkerController extends BaseController
         helper(['form', 'url', 'session']);
         $this->session = \Config\Services::session();
         $this->db = \Config\Database::connect();
-        $this->roleModel = model('CinemaModel');
-        $this->authModel = model('AuthModel');
+        $this->cinemaModel = model('CinemaModel');
+        $this->locationModel = model('LocationModel');
     }
 
     public function index()
     {
-        $whereFetch = "worker.status = 1";
-        $workers = $this->workerModel
+        $whereFetch = "cinema.status = 1";
+        $cinemas = $this->cinemaModel
         ->select("
-        worker.id,   
-        user.name, 
-        user.last_name, 
-        user.second_last_name") 
-        ->join('user', 'worker.user_id = user.id')
-        ->join('role', 'role.id = user.role_id')
-        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
-        ->where($whereFetch)->orderBy('user.id', 'asc')->findAll();
-        return view('workers/index', compact('workers'));
-
-            
+        cinema.id,
+        cinema.name,
+        location.description AS location_description, 
+        location.lat AS location_lat, 
+        location.longi AS location_longi") 
+        ->join('location', 'location.id = cinema.location_id')
+        ->where($whereFetch)->orderBy('location.id', 'asc')->findAll();
+        return view('cinemas/index', compact('cinemas'));
     }
 
 
     public function show($id = null) {
-        $whereFetch = "worker.status = 1";
-        $worker = $this->workerModel
-        ->join('user', 'worker.user_id = user.id')
-        ->select("
-        worker.id,   
-        user.name, 
-        user.last_name, 
-        user.second_last_name,
-        user.email,
-        auth.password,
-        user.role_id,
-        worker.type_of_worker_id") 
-        ->join('auth', 'auth.id = user.auth_id')
-        ->join('role', 'role.id = user.role_id')
-        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
+        $whereFetch = "cinema.status = 1";
+        $cinema = $this->cinemaModel
+        ->join('location', 'cinema.location_id = location.id') 
         ->where($whereFetch)->find((int)$id);
 
-        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-        $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-
-        if($worker) {
-            return view('workers/show', compact('worker', "roles", "typeOfWorkers"));
+        if($cinema) {
+            return view('cinemas/show', compact('cinema'));
         } else {
-            return redirect()->to(site_url('/workers'));
+            return redirect()->to(site_url('/cinemas'));
         }
     }
 
     public function new() {
-        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-        $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-        return view('workers/new', compact("roles", "typeOfWorkers"));
+        return view('cinemas/new');
     }
 
     public function create() {
         
-        $this->authModel->save([
-            "password" => $this->request->getVar('password'),
+        $this->locationModel->save([
+            "description" => $this->request->getVar('description'),
+            "longi" => $this->request->getVar('longi'),
+            "lat" => $this->request->getVar('lat'),
         ]);
 
-        $authId = $this->db->insertID();
+        $locationId = $this->db->insertID();
 
-        $this->userModel->save([
-            "auth_id" => $authId,
+        $this->cinemaModel->save([
             "name" =>$this->request->getVar('name'),
-            "last_name" => $this->request->getVar('lastName'),
-            "second_last_name" => $this->request->getVar('secondLastName'),
-            "role_id" => (int)$this->request->getVar('roleId'),
-            "email" => $this->request->getVar('email'),
+            "location_id" =>$locationId,
         ]);
 
-        $userId = $this->db->insertID();
 
-        $this->workerModel->save([
-            "user_id" => $userId,
-            "type_of_worker_id" => (int)$this->request->getVar('typeOfWorkerId'),
-        ]);
-
-        session()->setFlashdata("success", "Se agregó un nuevo trabajador");
-        return redirect()->to(site_url('/workers'));
+        session()->setFlashdata("success", "Se agregó un nuevo cine");
+        return redirect()->to(site_url('/cinemas'));
     }
 
     public function edit($id = null) {
-        $whereFetch = "worker.status = 1";
-        $worker = $this->workerModel
+        $whereFetch = "cinema.status = 1";
+        $cinema = $this->cinemaModel
         ->select("
-        worker.id,   
+        cinema.id,   
         user.name, 
         user.last_name, 
         user.second_last_name,
         user.email,
         auth.password,
         user.role_id,
-        worker.type_of_worker_id") 
-        ->join('user', 'worker.user_id = user.id')
+        cinema.type_of_worker_id") 
+        ->join('user', 'cinema.user_id = user.id')
         ->join('auth', 'auth.id = user.auth_id')
         ->join('role', 'role.id = user.role_id')
-        ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
+        ->join('type_of_worker', 'type_of_worker.id = cinema.type_of_worker_id')
         ->where($whereFetch)->find((int)$id);
 
         $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
         $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
 
-        if($worker) {
-            return view('workers/edit', compact("worker", "roles", "typeOfWorkers"));
+        if($cinema) {
+            return view('cinemas/edit', compact("cinema", "roles", "typeOfWorkers"));
         } else {
             session()->setFlashdata('failed', 'Trabajador no encontrado');
-            return redirect()->to('/workers');
+            return redirect()->to('/cinemas');
         }
     }
 
@@ -148,16 +120,16 @@ class WorkerController extends BaseController
 
 
         // $this->db->transException(true)->transStart();
-        $whereWorkerFetch = "worker.status = 1";
-        $worker = $this->workerModel
-        ->select('u.auth_id, worker.user_id')
-        ->join('type_of_worker as tof', 'tof.id = worker.type_of_worker_id')
-        ->join('user as u', 'u.id = worker.user_id')
+        $whereWorkerFetch = "cinema.status = 1";
+        $cinema = $this->cinemaModel
+        ->select('u.auth_id, cinema.user_id')
+        ->join('type_of_worker as tof', 'tof.id = cinema.type_of_worker_id')
+        ->join('user as u', 'u.id = cinema.user_id')
         ->join('auth as a', 'a.id = u.auth_id')
         ->join('role as r', 'r.id = u.role_id')
         ->where($whereWorkerFetch)->find($id);
 
-        if(!$worker) {
+        if(!$cinema) {
             throw new Exception("Trabajador no encontrado");
         }
 
@@ -180,13 +152,13 @@ class WorkerController extends BaseController
 
         /* UPDATE */
         $this->authModel->save([
-            "id" => (int)$worker["auth_id"],
+            "id" => (int)$cinema["auth_id"],
             "password" => $password,
         ]);
 
 
         $this->userModel->save([
-            "id" => (int)$worker["user_id"],
+            "id" => (int)$cinema["user_id"],
             "name" => $name,
             "last_name" => $lastName,
             "second_last_name" => $secondLastName,
@@ -194,14 +166,14 @@ class WorkerController extends BaseController
             "email" => $email,
         ]);
 
-        $this->workerModel->save([
+        $this->cinemaModel->save([
             "id" => $id,
             "type_of_worker_id" => $typeOfWorkerId,
         ]);
 
         // $this->db->transComplete();
         session()->setFlashdata('success', "Se modificaron los datos del trabajador");
-        return redirect()->to(base_url('/workers'));
+        return redirect()->to(base_url('/cinemas'));
 /*     } catch(DatabaseException $e) {
         // error
         $this->db->transRollback();
@@ -212,24 +184,24 @@ class WorkerController extends BaseController
 
     public function delete($id = null) {
 
-        $whereWorkerFetch = "worker.status = 1 AND user.status = 1";
-        $worker = $this->workerModel
+        $whereWorkerFetch = "cinema.status = 1 AND user.status = 1";
+        $cinema = $this->cinemaModel
         ->where($whereWorkerFetch)
-        ->join("user", "user.id = worker.user.id")
+        ->join("user", "user.id = cinema.user.id")
         ->find($id);
 
         
 
 
 
-        $this->workerModel->save([
+        $this->cinemaModel->save([
             "id" => $id,
             "status" => 0
         ]);
 
 
         session()->setFlashdata('success', 'Trabajador eliminado');
-        return redirect()->to(base_url('/workers'));
+        return redirect()->to(base_url('/cinemas'));
     }
     
 }

@@ -24,16 +24,16 @@ $this->section('title') ?> Editar cine
 
                                 <div class=" form-group mb-3">
                                     <label clas="form-label">Descripción ubicación</label>
-                                    <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación " value="<?= trim($cinema["description_location"])?>">
+                                    <input type="text" class="form-control" name="descriptionLocation" placeholder="Proporcione descripción de locación " value="<?= trim($cinema["location_description"])?>">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label clas="form-label">Lat</label>
-                                    <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine" value="<?= trim($cinema["lat_location"])?>">
+                                    <input type="text" class="form-control" name="latLocation" placeholder="Proporcione la latitud de cine" value="<?= trim($cinema["location_lat"])?>">
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label clas="form-label">long</label>
-                                    <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine" value="<?= trim($cinema["long_location"])?>">
+                                    <input type="text" class="form-control" name="longLocation" placeholder="Proporcione la longitud del cine" value="<?= trim($cinema["location_longi"])?>">
                                 </div>
                             </div>
                         </div>
