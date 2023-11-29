@@ -35,3 +35,16 @@ $routes->get('workers/edit/(:num)', "WorkerController::edit/$1");
 $routes->post('workers', "WorkerController::create");
 $routes->put('workers/(:num)', "WorkerController::update/$1");
 $routes->delete('workers/(:num)', "WorkerController::delete/$1");
+
+
+//Rjutas cinema
+
+$routes->get('cinemas', 'CinemaController::index');
+$routes->get('cinemas/new', "CinemaController::new");
+$routes->get('cinemas/(:num)', "CinemaController::show/$1");
+$routes->get('cinemas/edit/(:num)', "CinemaController::edit/$1");
+
+//api
+$routes->post('api/cinemas/v1', "CinemaController::create");
+$routes->put('api/cinemas/v1/(:num)', "CinemaController::update/$1");
+$routes->delete('api/cinemas/v1/(:num)', "CinemaController::delete/$1");
