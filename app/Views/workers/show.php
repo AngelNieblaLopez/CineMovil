@@ -97,13 +97,6 @@ $this->section('title') ?> Crear nuevo trabajador
             })
         }
 
-        $('#role').change(function () {
-            $('#roleId').val($(this).val());
-        });
-
-        $('#typeOfWorker').change(function () {
-            $('#typeOfWorkerId').val($(this).val());
-        });
     });
 </script>
 
