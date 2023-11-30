@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Controllers\Role;
 namespace App\Controllers;
 
 class Home extends BaseController

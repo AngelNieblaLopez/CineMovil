@@ -12,7 +12,7 @@ use App\Controllers\BaseController;
         
     } */
 
-    class RoleController extends BaseController
+    class WebController2 extends BaseController
     {
         protected $roleModel;
         protected $session;

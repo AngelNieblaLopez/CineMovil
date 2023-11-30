@@ -9,7 +9,7 @@ use Error;
 use Exception;
 use Predis\Connection\Cluster\RedisCluster;
 
-class ConfigController extends BaseController
+class WebController extends BaseController
 {
     protected $configModel;
     protected $enviromentServerModel;
