@@ -12,7 +12,7 @@ $this->section('title') ?> Editar cine
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('api/cinemas/v1/' . $cinema["id"]) ?>" method="POST">
+                <form action="<?= base_url('api/web/cinemas/v1/' . $cinema["id"]) ?>" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">

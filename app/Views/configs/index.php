@@ -52,7 +52,7 @@ $this->section('title'); ?> Listado de configuraciones <?= $this->endSection(); 
                                     <td class="d-flex">
                                         <a href="<?= base_url("configs/" . $config["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
                                         <a href="<?= base_url("configs/edit/" . $config["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                        <form class="display-none" method="post" action="<?= base_url("api/configs/v1/" . $config["id"]) ?>" id="deleteConfig<?= $config['id'] ?>">
+                                        <form class="display-none" method="post" action="<?= base_url("api/web/configs/v1/" . $config["id"]) ?>" id="deleteConfig<?= $config['id'] ?>">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <a href="javascript:void(0)" onclick="deleteConfig('deleteConfig<?= $config['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
                                         </form>

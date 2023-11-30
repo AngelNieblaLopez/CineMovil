@@ -12,7 +12,7 @@ $this->section('title') ?> Crear nuevo cliente
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('api/clients/v1') ?>" method="POST">
+                <form action="<?= base_url('api/web/clients/v1') ?>" method="POST">
                     <?= csrf_field() ?>
 
                     <div class="row">

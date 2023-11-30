@@ -12,7 +12,7 @@ $this->section('title') ?> Crear trabajador
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('workers/' . $worker["id"]) ?>" method="POST">
+                <form action="<?= base_url('api/web/workers/v1/' . $worker["id"]) ?>" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">

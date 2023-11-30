@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Role;
 
 use App\Controllers\BaseController;
 
@@ -12,7 +12,7 @@ use App\Controllers\BaseController;
         
     } */
 
-    class WebController2 extends BaseController
+    class WebController extends BaseController
     {
         protected $roleModel;
         protected $session;

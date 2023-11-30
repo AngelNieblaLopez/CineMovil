@@ -12,7 +12,7 @@ $this->section('title') ?> Editar configuración
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('api/configs/v1/' . $config["id"]) ?>" method="POST">
+                <form action="<?= base_url('api/web/configs/v1/' . $config["id"]) ?>" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">

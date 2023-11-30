@@ -50,7 +50,7 @@ $this->section('title'); ?> Listado de cines <?= $this->endSection(); ?>
                                     <td class="d-flex">
                                         <a href="<?= base_url("cinemas/" . $cinema["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
                                         <a href="<?= base_url("cinemas/edit/" . $cinema["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                        <form class="display-none" method="post" action="<?= base_url("api/cinemas/v1/" . $cinema["id"]) ?>" id="deleteCinema<?= $cinema['id'] ?>">
+                                        <form class="display-none" method="post" action="<?= base_url("api/web/cinemas/v1/" . $cinema["id"]) ?>" id="deleteCinema<?= $cinema['id'] ?>">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <a href="javascript:void(0)" onclick="deleteCinema('deleteCinema<?= $cinema['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
                                         </form>

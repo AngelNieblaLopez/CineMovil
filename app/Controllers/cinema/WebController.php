@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Controllers;
-
+namespace App\Controllers\cinema;
 use App\Controllers\BaseController;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\Exceptions\RedirectException;

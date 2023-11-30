@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\worker;
 
 use App\Controllers\BaseController;
 use CodeIgniter\Database\Exceptions\DatabaseException;

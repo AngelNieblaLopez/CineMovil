@@ -12,7 +12,7 @@ $this->section('title') ?> Crear nuevo trabajador
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('workers') ?>" method="POST">
+                <form action="<?= base_url('api/web/workers/v1') ?>" method="POST">
                     <?= csrf_field() ?>
 
                     <div class="row">
@@ -102,7 +102,6 @@ $this->section('title') ?> Crear nuevo trabajador
         }
 
         $('#role').change(function() {
-            console.log(roles)
             $('#roleId').val($(this).val());
         });
 

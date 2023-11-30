@@ -9,74 +9,81 @@ use CodeIgniter\Router\RouteCollection;
 #$routes->get('/', 'Home::index');
 
 
-// Roles
-$routes->group('roles', ['namespace' => 'App\Controllers\Role'], function ($routes) {
-    $routes->get('', 'Home::index');
-    $routes->get('new', 'WebController2::new');
+// Pages
+$routes->group('roles', ['namespace' => 'App\Controllers\role'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
     $routes->get('(:num)', 'WebController::show/$1');
     $routes->get('edit/(:num)', 'WebController::edit/$1');
-    
 });
-// PAGES
-/* $routes->get('roles', 'role\WebController::index');
-$routes->get('roles/new', "role\WebController::new");
-$routes->get('roles/(:num)', "role\WebController::show/$1");
-$routes->get('roles/edit/(:num)', "role\WebController::edit/$1"); */
+
+$routes->group('workers', ['namespace' => 'App\Controllers\worker'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
+
+$routes->group('clients', ['namespace' => 'App\Controllers\client'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
+
+$routes->group('cinemas', ['namespace' => 'App\Controllers\cinema'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
+
+$routes->group('configs', ['namespace' => 'App\Controllers\config'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
+
+
 
 // API
-$routes->post('api/roles/v1/', "role\WebController::create");
-$routes->put('api/roles/v1/(:num)', "role\WebController::update/$1");
-$routes->delete('api/roles/v1/(:num)', "role\WebController::delete/$1");
-
-
-
-
-//RUTAS Worker
-//Pages
-$routes->get('workers', 'worker\WebController::index');
-$routes->get('workers/new', "worker\WebController::new");
-$routes->get('workers/(:num)', "worker\WebController::show/$1");
-$routes->get('workers/edit/(:num)', "worker\WebController::edit/$1");
-
-//api
-$routes->post('workers', "worker\WebController::create");
-$routes->put('workers/(:num)', "worker\WebController::update/$1");
-$routes->delete('workers/(:num)', "worker\WebController::delete/$1");
-
-
-//Rutas clients
-//Pages
-$routes->get('clients', 'client\WebController::index');
-$routes->get('clients/new', "client\WebController::new");
-$routes->get('clients/(:num)', "client\WebController::show/$1");
-$routes->get('clients/edit/(:num)', "client\WebController::edit/$1");
-
-//api
-$routes->post('api/clients/v1', "client\WebController::create");
-$routes->put('api/clients/v1/(:num)', "client\WebController::update/$1");
-$routes->delete('api/clients/v1/(:num)', "client\WebController::delete/$1");
-
-
-//Rutas cinema
-//Pages
-$routes->get('cinemas', 'cinema\WebController::index');
-$routes->get('cinemas/new', "cinema\WebController::new");
-$routes->get('cinemas/(:num)', "cinema\WebController::show/$1");
-$routes->get('cinemas/edit/(:num)', "cinema\WebController::edit/$1");
-
-//api
-$routes->post('api/cinemas/v1', "cinema\WebController::create");
-$routes->put('api/cinemas/v1/(:num)', "cinema\WebController::update/$1");
-$routes->delete('api/cinemas/v1/(:num)', "cinema\WebController::delete/$1");
-
-//Rutas config
-//Pages
-$routes->get('configs', 'config\WebController::index');
-$routes->get('configs/new', "config\WebController::new");
-$routes->get('configs/(:num)', "config\WebController::show/$1");
-$routes->get('configs/edit/(:num)', "config\WebController::edit/$1");
-
-//api
-$routes->post('api/configs/v1', "config\WebController::create");
-$routes->put('api/configs/v1/(:num)', "config\WebController::update/$1");
-$routes->delete('api/configs/v1/(:num)', "config\WebController::delete/$1");
+$routes->group('api', function ($routes) {
+    $routes->group('web', function ($routes) {
+        $routes->group('roles', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\role'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('workers', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\worker'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('clients', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\client'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('cinemas', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\cinema'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('configs', function ($routes) {
+            $routes->group('v1' , ['namespace' => 'App\Controllers\config'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+    });
+});
