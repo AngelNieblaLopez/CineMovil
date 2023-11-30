@@ -48,6 +48,7 @@ $this->section('title'); ?> Listado de configuraciones <?= $this->endSection(); 
                                 <tr>
                                     <td> <?= $config['id'] ?> </td>
                                     <td> <?= $config['name'] ?> </td>
+                                    <td> <?= $config['enviroment_server_name'] ?> </td>
                                     <td class="d-flex">
                                         <a href="<?= base_url("configs/" . $config["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
                                         <a href="<?= base_url("configs/edit/" . $config["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>

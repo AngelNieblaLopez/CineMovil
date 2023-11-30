@@ -85,7 +85,7 @@ $this->section('title') ?> Crear nueva configuración
 
         if (enviroments.length !== 0) {
             $('#enviromentServerId').val(enviroments[0].id);
-            $("#enviroment option").each((idx, option) => {
+            $("#enviroment option").each((_, option) => {
                 option.selected = false;
                 if (option.value == enviroments[0].id) {
                     option.selected = true;
@@ -95,7 +95,7 @@ $this->section('title') ?> Crear nueva configuración
 
         if (roles.length !== 0) {
             $('#defaultCustomerRoleId').val(roles[0].id);
-            $("#defaultCustomerRole option").each((idx, option) => {
+            $("#defaultCustomerRole option").each((_, option) => {
                 option.selected = false;
                 if (option.value == roles[0].id) {
                     option.selected = true;
@@ -115,6 +115,7 @@ $this->section('title') ?> Crear nueva configuración
 
 
         $('#enviroment').change(function() {
+            console.log($(this).val())
             $('#enviromentServerId').val($(this).val());
         });
 
@@ -123,7 +124,7 @@ $this->section('title') ?> Crear nueva configuración
         });
 
         $('#workerApp').change(function() {
-            $('#workerAppId|').val($(this).val());
+            $('#workerAppId').val($(this).val());
         });
     });
 </script>

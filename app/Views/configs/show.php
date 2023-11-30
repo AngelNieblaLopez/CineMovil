@@ -75,15 +75,17 @@ $this->section('title') ?> Editar configuración
         let config = <?= json_encode($config) ?>;
 
         if (enviroments.length !== 0) {
+            $('#enviromentServerId').val(config.enviroment_server_id);
             $("#enviroment option").each((idx, option) => {
                 option.selected = false;
-                if (option.value == config.enviroment_id) {
+                if (option.value == config.enviroment_server_id) {
                     option.selected = true;
                 }
             });
         }
 
         if (roles.length !== 0) {
+            $('#defaultCustomerRoleId').val(config.default_customer_role_id);
             $("#defaultCustomerRole option").each((idx, option) => {
                 option.selected = false;
                 if (option.value == config.default_customer_role_id) {
@@ -93,6 +95,7 @@ $this->section('title') ?> Editar configuración
         }
 
         if (workers.length !== 0) {
+            $('#workerAppId').val(config.app_worker_id);
             $("#workerApp option").each((idx, option) => {
                 option.selected = false;
                 if (option.value == config.app_worker_id) {
