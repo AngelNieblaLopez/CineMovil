@@ -7,7 +7,7 @@ $this->section('title'); ?> Listado de clientes <?= $this->endSection(); ?>
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('customers/new') ?>" class="btn btn-primary">Nuevo cliente</a>
+            <a href="<?= base_url('clients/new') ?>" class="btn btn-primary">Nuevo cliente</a>
         </div>
     </div>
 </div>
@@ -44,19 +44,19 @@ $this->section('title'); ?> Listado de clientes <?= $this->endSection(); ?>
                     </thead>
                     <tbody>
                         <?php
-                        if (count($customers) > 0) :
-                            foreach ($customers as $customer) : ?>
+                        if (count($clients) > 0) :
+                            foreach ($clients as $client) : ?>
                                 <tr>
-                                    <td> <?= $customer['id'] ?> </td>
-                                    <td> <?= $customer['name'] ?> </td>
-                                    <td> <?= $customer['last_name'] ?> </td>
-                                    <td> <?= $customer['second_last_name'] ?> </td>
+                                    <td> <?= $client['id'] ?> </td>
+                                    <td> <?= $client['name'] ?> </td>
+                                    <td> <?= $client['last_name'] ?> </td>
+                                    <td> <?= $client['second_last_name'] ?> </td>
                                     <td class="d-flex">
-                                        <a href="<?= base_url("customers/" . $customer["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
-                                        <a href="<?= base_url("customers/edit/" . $customer["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                        <form class="display-none" method="post" action="<?= base_url("customers/" . $customer["id"]) ?>" id="deleteCust|omer<?= $customer['id'] ?>">
+                                        <a href="<?= base_url("clients/" . $client["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
+                                        <a href="<?= base_url("clients/edit/" . $client["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
+                                        <form class="display-none" method="post" action="<?= base_url("api/clients/v1/" . $client["id"]) ?>" id="deleteClient<?= $client['id'] ?>">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <a href="javascript:void(0)" onclick="deleteCustomer('deleteCustomer<?= $customer['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
+                                            <a href="javascript:void(0)" onclick="deleteClient('deleteClient<?= $client['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
                                         </form>
                                     </td>
                                 </tr>
@@ -76,7 +76,7 @@ $this->section('title'); ?> Listado de clientes <?= $this->endSection(); ?>
 </div>
 
 <script>
-    function deleteCustomer(formId) {
+    function deleteClient(formId) {
         let confirm = window.confirm('¿Está seguro de eliminar este cliente?');
         if (confirm) {
             document.getElementById(formId).submit();

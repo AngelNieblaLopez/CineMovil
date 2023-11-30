@@ -7,12 +7,12 @@ $this->section('title') ?> Crear nuevo cliente
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('customers') ?>" class="btn btn-primary">Regresar a clientes</a>
+            <a href="<?= base_url('clients') ?>" class="btn btn-primary">Regresar a clientes</a>
         </div>
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('customers') ?>" method="POST">
+                <form action="<?= base_url('api/clients/v1') ?>" method="POST">
                     <?= csrf_field() ?>
 
                     <div class="row">

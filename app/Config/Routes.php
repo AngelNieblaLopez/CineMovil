@@ -37,6 +37,19 @@ $routes->put('workers/(:num)', "WorkerController::update/$1");
 $routes->delete('workers/(:num)', "WorkerController::delete/$1");
 
 
+//Rutas clients
+//Pages
+$routes->get('clients', 'ClientController::index');
+$routes->get('clients/new', "ClientController::new");
+$routes->get('clients/(:num)', "ClientController::show/$1");
+$routes->get('clients/edit/(:num)', "ClientController::edit/$1");
+
+//api
+$routes->post('api/clients/v1', "ClientController::create");
+$routes->put('api/clients/v1/(:num)', "ClientController::update/$1");
+$routes->delete('api/clients/v1/(:num)', "ClientController::delete/$1");
+
+
 //Rutas cinema
 //Pages
 $routes->get('cinemas', 'CinemaController::index');
