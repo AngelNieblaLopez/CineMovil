@@ -45,6 +45,13 @@ $routes->group('configs', ['namespace' => 'App\Controllers\config'], function ($
     $routes->get('edit/(:num)', 'WebController::edit/$1');
 });
 
+$routes->group('rooms', ['namespace' => 'App\Controllers\room'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
+
 
 
 // API
@@ -80,6 +87,13 @@ $routes->group('api', function ($routes) {
         });
         $routes->group('configs', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\config'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('rooms', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\room'], function ($routes) {
                 $routes->post('', "WebController::create");
                 $routes->put('(:num)', "WebController::update/$1");
                 $routes->delete('(:num)', "WebController::delete/$1");

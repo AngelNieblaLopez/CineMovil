@@ -8,4 +8,7 @@ INSERT INTO enviroment_server (name) values ('staging');
 
 INSERT INTO `role` (name, is_worker) values ("cutomer v1", 0);
 
--- INSERT INTO config (name, enviroment_server_id, default_customer_role_id, app_worker_id) values ("Development", 1, 1, 1)
+
+INSERT INTO type_room (name, price) value ("Clásica",100);
+INSERT INTO type_room (name, price) value ("VIP",150);
+INSERT INTO type_room (name, price) value ("3D",150);
