@@ -34,16 +34,16 @@ CREATE TABLE role (
     status bit NOT NULL DEFAULT 1
 );
 
-CREATE TABLE page (
+/* CREATE TABLE page (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64) NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     status bit NOT NULL DEFAULT 1
-);
+); */
 
-CREATE TABLE module (
+/* CREATE TABLE module (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(64) NOT NULL,
     page_id INT NOT NULL,
@@ -51,9 +51,9 @@ CREATE TABLE module (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     status bit NOT NULL DEFAULT 1
-);
+); */
 
-CREATE TABLE role_module (
+/* CREATE TABLE role_module (
     id INT PRIMARY KEY AUTO_INCREMENT,
     role_id INT NOT NULL,
     module_id INT NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE role_module (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     status bit NOT NULL DEFAULT 1
-);
+); */
 
 CREATE TABLE movie (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -291,7 +291,7 @@ CREATE TABLE enviroment_server (
     status bit NOT NULL DEFAULT 1
 );
 
-CREATE TABLE category (
+CREATE TABLE movie_clasification (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     min_age int NOT NULL,
@@ -301,7 +301,8 @@ CREATE TABLE category (
     status bit NOT NULL DEFAULT 1
 );
 
-CREATE TABLE movie_clasification (
+
+CREATE TABLE category (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     description varchar(255) NOT NULL,
@@ -325,14 +326,14 @@ REFERENCES role (id);
 
 -- Role_Module
 
-ALTER TABLE module  ADD  CONSTRAINT module_page FOREIGN KEY(page_id)
-REFERENCES page (id);
+/* ALTER TABLE module  ADD  CONSTRAINT module_page FOREIGN KEY(page_id)
+REFERENCES page (id); */
 
-ALTER TABLE role_module  ADD  CONSTRAINT role_module_role FOREIGN KEY(role_id)
-REFERENCES role (id);
+/* ALTER TABLE role_module  ADD  CONSTRAINT role_module_role FOREIGN KEY(role_id)
+REFERENCES role (id); */
 
-ALTER TABLE role_module  ADD  CONSTRAINT role_module_module FOREIGN KEY(module_id)
-REFERENCES module (id);
+/* ALTER TABLE role_module  ADD  CONSTRAINT role_module_module FOREIGN KEY(module_id)
+REFERENCES module (id); */
 
 -- Cinema
 ALTER TABLE cinema  ADD  CONSTRAINT cinema_location FOREIGN KEY(location_id)
