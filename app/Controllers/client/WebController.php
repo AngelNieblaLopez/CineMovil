@@ -217,53 +217,6 @@ class WebController extends BaseController
 
 
     /* (API MOBILE) */
-    public function mobileRegister()
-    {
-        $password = $this->request->getVar('password');
-        $name = $this->request->getVar('name');
-        $lastName = $this->request->getVar('lastName');
-        $secondLastName = $this->request->getVar('secondLastName');
-        $email = $this->request->getVar('email');
-
-        $envv = ENVIRONMENT;
-        $config = $this->configModel
-            ->join('enviroment_server', "enviroment_server.id = config.enviroment_server_id")
-            ->where("config.status = 1 AND enviroment_server.name = '$envv'")->orderBy('config.id', 'asc')->findAll();
-
-        if (count($config) == 0) {
-            throw new Exception("Enviroment no establecido");
-        }
-
-        $this->authModel->save([
-            "password" => $password,
-        ]);
-
-        $authId = $this->db->insertID();
-
-        $this->userModel->save([
-            "auth_id" => $authId,
-            "name" => $name,
-            "last_name" => $lastName,
-            "second_last_name" => $secondLastName,
-            "role_id" => $config[0]["default_customer_role_id"],
-            "email" => $email,
-        ]);
-
-        $userId = $this->db->insertID();
-
-        $this->clientModel->save([
-            "user_id" => $userId,
-        ]);
-        
-        
-        $respuesta = [
-            'estatus' => 201,
-            'error' => null,
-            'mensaje' => ['success' => 'Recurso almacenado satisfactoriamente']
-        ];
-
-        return $this->respondCreated($respuesta, 201);
-    }
 
     /* (API MOBILE) */
 }
