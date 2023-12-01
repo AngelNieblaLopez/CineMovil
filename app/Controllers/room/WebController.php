@@ -13,14 +13,21 @@ class WebController extends BaseController
     protected $roomModel;
     protected $typeRoomModel;
     protected $cinemaModel;
+    protected $seatOfRoomModel;
+    protected $positionOfSeatModel;
+    protected $db;
+
 
     public function __construct()
     {
         helper(['form', 'url', 'session']);
         $this->session = \Config\Services::session();
+        $this->db = \Config\Database::connect();
         $this->roomModel = model('RoomModel');
         $this->typeRoomModel = model('TypeRoomModel');
         $this->cinemaModel = model('CinemaModel');
+        $this->seatOfRoomModel = model('SeatOfRoomModel');
+        $this->positionOfSeatModel = model('PositionOfSeatModel');
     }
 
     public function index()
@@ -33,7 +40,6 @@ class WebController extends BaseController
             ->orderBy('id', 'asc')->findAll();
         return view('rooms/index', compact('rooms'));
     }
-
 
     public function show($id = null)
     {
@@ -87,6 +93,22 @@ class WebController extends BaseController
             "cinema_id" => $cinemaId
         ]);
 
+        $roomId = $this->db->insertID();
+        $positionsOfSeat = $this->positionOfSeatModel
+        ->select("position_of_seat.id, CONCAT(row_of_seat.name, column_of_seat.name) AS seat_name")
+        ->join("column_of_seat", "column_of_seat.id = position_of_seat.column_of_seat_id")
+        ->join("row_of_seat", "row_of_seat.id = position_of_seat.row_of_seat_id")
+        ->where("position_of_seat.status = 1")
+        ->findAll();
+
+        foreach ($positionsOfSeat as $positionOfSeat) {
+            $this->seatOfRoomModel->save([
+                "room_id" => $roomId,
+                "name" => $positionOfSeat["seat_name"],
+                "available" =>  1,
+                "position_of_seat_id"=> $positionOfSeat["id"],
+            ]);
+        }
 
         session()->setFlashdata("success", "Se agregó una nueva sala");
         return redirect()->to(site_url('/rooms'));
