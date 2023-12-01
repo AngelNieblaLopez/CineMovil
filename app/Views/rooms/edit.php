@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Crear clientes
+$this->section('title') ?> Editar sala
 <?= $this->endSection() ?>
 
 
@@ -7,65 +7,56 @@ $this->section('title') ?> Crear clientes
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('clients') ?>" class="btn btn-primary">Regresar a clientes</a>
+            <a href="<?= base_url('rooms') ?>" class="btn btn-primary">Regresar a salas</a>
         </div>
 
         <div class="row">
             <div class="col-xl-6 m-auto">
-                <form action="<?= base_url('api/web/clients/v1/' . $client["id"]) ?>" method="POST">
+                <form action="<?= base_url('api/web/rooms/v1/' . $room["id"]) ?>" method="POST">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card shadow">
                                 <div class="card-body">
-                                    <h5 class="card-title">Editar datos del cliente</h5>
+                                    <h5 class="card-title">Editar datos de la sala</h5>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Nombre</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Proporcione el nombre" value="<?php if ($client['name']) : echo $client['name'];
-                                                                                                                                        else : set_value('name');
-                                                                                                                                        endif ?>">
+                                        <input type="text" class="form-control" name="name" placeholder="Proporcione el nombre" value="<?php if ($room['name']) : echo $room['name'];
+                                                                                                                                            else : set_value('name');
+                                                                                                                                            endif ?>">
                                     </div>
-
-                                    <div class=" form-group mb-3">
-                                        <label clas="form-label">Apellido paterno</label>
-                                        <input type="text" class="form-control" name="lastName" placeholder="Proporcione el apellido paterno" value="<?php if ($client['last_name']) : echo $client['last_name'];
-                                                                                                                                                        else : set_value('last_name');
-                                                                                                                                                        endif ?>">
+                                    <div class="form-group mb-3">
+                                        <input type="checkbox" class="form-check-input" name="available" <?= $room["available"] == "1"? "checked" : "" ?>>
+                                        <label class="form-check-label">Disponible</label>
                                     </div>
-                                    <div class=" form-group mb-3">
-                                        <label clas="form-label">Apellido materno</label>
-                                        <input type="text" class="form-control" name="secondLastName" placeholder="Proporcione el apellido materno" value="<?php if ($client['second_last_name']) : echo $client['second_last_name'];
-                                                                                                                                                            else : set_value('second_last_name');
-                                                                                                                                                            endif ?>">
-                                    </div>
-                                    <div class=" form-group mb-3">
-                                        <label clas="form-label">email</label>
-                                        <input type="email" class="form-control" name="email" placeholder="Proporcione el email" value="<?php if ($client['email']) : echo $client['email'];
-                                                                                                                                        else : set_value('email');
-                                                                                                                                        endif ?>">
-                                    </div>
-                                    <div class=" form-group mb-3">
-                                        <label clas="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" name="password" placeholder="Proporcione la contraseña" value="<?php if ($client['password']) : echo $client['password'];
-                                                                                                                                                    else : set_value('password');
-                                                                                                                                                    endif ?>">
-                                    </div>
-
-                                    <div class=" form-group mb-3">
-                                        <label clas="form-label">Role</label>
-                                        <select class="form-control" id="role">
+                                    <div class="form-group mb-3">
+                                        <label clas="form-label">Tipo de habitación</label>
+                                        <select class="form-control" id="typeRoom">
                                             <option disabled value="0">- Seleccione -</option>
-                                            <?php foreach ($roles as $rol) : ?>
-                                                <option value="<?= $rol['id'] ?>">
-                                                    <?= $rol['name'] ?>
+                                            <?php foreach ($typeRooms as $typeRoom) : ?>
+                                                <option value="<?= $typeRoom['id'] ?>">
+                                                    <?= $typeRoom['name'] ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label clas="form-label">Cine</label>
+                                        <select class="form-control" id="cinema">
+                                            <option disabled value="0">- Seleccione -</option>
+                                            <?php foreach ($cinemas as $cinema) : ?>
+                                                <option value="<?= $cinema['id'] ?>">
+                                                    <?= $cinema['name'] ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
 
-                                    <input id="roleId" hidden name="roleId">
-                                    <button type="submit" class="btn btn-success">Guardar cliente</button>
+
+                                    <input id="typeRoomId" hidden name="typeRoomId">
+                                    <input id="cinemaId" hidden name="cinemaId">
+                                    <button type="submit" class="btn btn-success">Guardar sala</button>
                                 </div>
                             </div>
                         </div>
@@ -78,21 +69,34 @@ $this->section('title') ?> Crear clientes
 </div>
 <script>
     $(document).ready(function() {
-        let roles = <?= json_encode($roles) ?>;
-        let client = <?= json_encode($client) ?>;
+        let room = <?= json_encode($room) ?>;
+        let typeRooms = <?= json_encode($typeRooms) ?>;
+        let cinemas = <?= json_encode($cinemas) ?>;
 
-        if (roles.length !== 0) {
-            $('#roleId').val(client.role_id);
-            $("#role option").each((idx, option) => {
-                option.selected = false;
-                if (option.value == client.role_id) {
-                    option.selected = true;
+        if (typeRooms.length !== 0) {
+            $('#typeRoomId').val(room.type_room_id);
+            $("#typeRoom option").each((_, option) => {
+                if (option.value == room.type_room_id) {
+                    option.selected = true
                 }
             });
         }
 
-        $('#role').change(function() {
-            $('#roleId').val($(this).val());
+        if (cinemas.length !== 0) {
+            $('#cinemaId').val(room.cinema_id);
+            $("#cinema option").each((_, option) => {
+                if (option.value == room.cinema_id) {
+                    option.selected = true
+                }
+            })
+        }
+
+        $('#typeRoom').change(function() {
+            $('#typeRoomId').val($(this).val());
+        });
+
+        $('#cinema').change(function() {
+            $('#cinemaId').val($(this).val());
         });
     });
 </script>

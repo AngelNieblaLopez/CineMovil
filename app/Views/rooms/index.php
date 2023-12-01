@@ -50,7 +50,7 @@ $this->section('title'); ?> Listado de salas <?= $this->endSection(); ?>
                                     <td> <?= $room['id'] ?> </td>
                                     <td> <?= $room['name'] ?> </td>
                                     <td> <?= $room['type_room_name'] ?> </td>
-                                    <td> <?= $room['available'] ?> </td>
+                                    <td> <?= $room['available'] == "1"? "Sí" : "No"   ?> </td>
                                     <td class="d-flex">
                                         <a href="<?= base_url("rooms/" . $room["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
                                         <a href="<?= base_url("rooms/edit/" . $room["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>

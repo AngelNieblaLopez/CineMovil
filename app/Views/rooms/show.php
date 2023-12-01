@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Crear nuevo cliente
+$this->section('title') ?> Detalle sala
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -7,7 +7,7 @@ $this->section('title') ?> Crear nuevo cliente
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('clients') ?>" class="btn btn-primary">Regresar a clientes</a>
+            <a href="<?= base_url('clients') ?>" class="btn btn-primary">Regresar a salas</a>
         </div>
     </div>
 
@@ -16,40 +16,38 @@ $this->section('title') ?> Crear nuevo cliente
             <div class="col-sm-12">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h5 class="card-title">Detalle cliente</h5>
+                        <h5 class="card-title">Detalle sala</h5>
                         <div class="form-group mb-3">
                             <label clas="form-label">Name</label>
-                            <input type="text" class="form-control" disabled name="name" placeholder="Proporcione el nombre " value="<?= trim($client["name"]) ?>">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label clas="form-label">Apellido paterno</label>
-                            <input type="text" class="form-control" disabled name="lastName" placeholder="Proporcione el apellido paterno " value="<?= trim($client["last_name"]) ?>">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label clas="form-label">Apellido materno</label>
-                            <input type="text" class="form-control" disabled name="secondLastName" placeholder="Proporcione el apellido materno " value="<?= trim($client["second_last_name"]) ?>">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label clas="form-label">email</label>
-                            <input type="email" class="form-control" disabled name="email" placeholder="Proporcione el email " value="<?= trim($client["email"]) ?>">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label clas="form-label">Contraseña</label>
-                            <input type="password" class="form-control" disabled name="password" placeholder="Proporcione la contraseña" value="<?= trim($client["password"]) ?>">
+                            <input type="text" class="form-control" disabled name="name" placeholder="Proporcione el nombre " value="<?= trim($room["name"]) ?>">
                         </div>
 
-                        <div class=" form-group mb-3">
-                            <label clas="form-label">Role</label>
-                            <select class="form-control" id="role" disabled>
+                        <div class="form-group mb-3">
+                            <input type="checkbox" class="form-check-input" name="available" <?= $room["available"] == "1"? "checked" : "" ?>>
+                            <label class="form-check-label">Disponible</label>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label clas="form-label">Tipo de habitación</label>
+                            <select class="form-control" id="typeRoom" disabled>
                                 <option disabled value="0">- Seleccione -</option>
-                                <?php foreach ($roles as $rol) : ?>
-                                    <option value="<?= $rol['id'] ?>">
-                                        <?= $rol['name'] ?>
+                                <?php foreach ($typeRooms as $typeRoom) : ?>
+                                    <option value="<?= $typeRoom['id'] ?>">
+                                        <?= $typeRoom['name'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
+                        <div class="form-group mb-3">
+                            <label clas="form-label">Cine</label>
+                            <select class="form-control" id="cinema" disabled>
+                                <option disabled value="0">- Seleccione -</option>
+                                <?php foreach ($cinemas as $cinema) : ?>
+                                    <option value="<?= $cinema['id'] ?>">
+                                        <?= $cinema['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,19 +57,26 @@ $this->section('title') ?> Crear nuevo cliente
 
 <script>
     $(document).ready(function() {
-        let roles = <?= json_encode($roles) ?>;
-        let client = <?= json_encode($client) ?>;
+        let room = <?= json_encode($room) ?>;
+        let typeRooms = <?= json_encode($typeRooms) ?>;
+        let cinemas = <?= json_encode($cinemas) ?>;
 
-        if (roles.length !== 0) {
-            $('#roleId').val(client.role_id);
-            $("#role option").each((idx, option) => {
-                option.selected = false;
-                if (option.value == client.role_id) {
-                    option.selected = true;
+
+        if (typeRooms.length !== 0) {
+            $("#typeRoom option").each((_, option) => {
+                if (option.value == room.type_room_id) {
+                    option.selected = true
                 }
             });
         }
 
+        if (cinemas.length !== 0) {
+            $("#cinema option").each((_, option) => {
+                if (option.value == room.cinema_id) {
+                    option.selected = true
+                }
+            })
+        }
     });
 </script>
 <?= $this->endSection() ?>

@@ -5,6 +5,8 @@ namespace App\Controllers\room;
 use App\Controllers\BaseController;
 use Exception;
 
+use function PHPUnit\Framework\throwException;
+
 class WebController extends BaseController
 {
     protected $session;
@@ -24,11 +26,11 @@ class WebController extends BaseController
     public function index()
     {
         $rooms = $this->roomModel
-        ->select("room.id, type_room.name AS type_room_name, room.available")
-        ->join("type_room", "type_room.id = room.type_room_id")
-        ->join("cinema", "cinema.id = room.cinema_id")
-        ->where("room.status = 1")
-        ->orderBy('id', 'asc')->findAll();
+            ->select("room.id, room.name, type_room.name AS type_room_name, room.available")
+            ->join("type_room", "type_room.id = room.type_room_id")
+            ->join("cinema", "cinema.id = room.cinema_id")
+            ->where("room.status = 1")
+            ->orderBy('id', 'asc')->findAll();
         return view('rooms/index', compact('rooms'));
     }
 
@@ -59,6 +61,8 @@ class WebController extends BaseController
     {
         $typeRoomId = $this->request->getVar('typeRoomId');
         $cinemaId = $this->request->getVar('cinemaId');
+        $available = $this->request->getVar('available');
+        $name = $this->request->getVar('name');
 
         $typeRoom = $this->typeRoomModel->where("status = 1")->find($typeRoomId);
 
@@ -71,14 +75,13 @@ class WebController extends BaseController
         if (!$cinema) {
             throw new Exception("Cine no encontrado");
         }
-        
-        $available = $this->request->getVar('available');
+
         if (!$available) {
             $available = false;
         }
 
         $this->roomModel->save([
-            "name" => $this->request->getVar('name'),
+            "name" => $name,
             "available" => $available,
             "type_room_id" => $typeRoomId,
             "cinema_id" => $cinemaId
@@ -91,10 +94,12 @@ class WebController extends BaseController
 
     public function edit($id = null)
     {
-        $filterFetch = "status = 1";
-        $room = $this->roomModel->where($filterFetch)->find($id);
+        $typeRooms = $this->typeRoomModel->where("status = 1")->findAll();
+        $cinemas = $this->cinemaModel->where("status = 1")->findAll();
+
+        $room = $this->roomModel->where("status = 1")->find($id);
         if ($room) {
-            return view('rooms/edit', compact("room"));
+            return view('rooms/edit', compact("room", "typeRooms", "cinemas"));
         } else {
             session()->setFlashdata('failed', 'Role no encontrado');
             return redirect()->to('/rooms');
@@ -103,19 +108,42 @@ class WebController extends BaseController
 
     public function update($id = null)
     {
-        $isWorker = $this->request->getVar('is_worker');
-        if (!$isWorker) {
-            $isWorker = false;
+        $typeRoomId = $this->request->getVar('typeRoomId');
+        $cinemaId = $this->request->getVar('cinemaId');
+        $available = $this->request->getVar('available');
+        $name = $this->request->getVar('name');
+
+
+        $room = $this->roomModel->where("status = 1")->find($id);
+        if(!$room) {
+            throw new Exception("Sala no encontrada");
+        }
+
+        $typeRoom = $this->typeRoomModel->where("status = 1")->find($typeRoomId);
+        if (!$typeRoom) {
+            throw new Exception("Tipo de sala no encontrado");
+        }
+
+        $cinema = $this->cinemaModel->where("status = 1")->find($cinemaId);
+        if (!$cinema) {
+            throw new Exception("Cine no encontrado");
+        }
+
+        if (!$available) {
+            $available = false;
         }
 
         $this->roomModel->save([
-            'id' => $id,
-            'name' => $this->request->getVar('name'),
-            'is_worker' => $isWorker,
+            "id" => $id,
+            "name" => $name,
+            "available" => $available,
+            "type_room_id" => $typeRoomId,
+            "cinema_id" => $cinemaId
         ]);
 
-        session()->setFlashdata('success', "Se modificaron los datos del rol");
-        return redirect()->to(base_url('/rooms'));
+
+        session()->setFlashdata("success", "Se modificó una sala");
+        return redirect()->to(site_url('/rooms'));
     }
 
     public function delete($id = null)
