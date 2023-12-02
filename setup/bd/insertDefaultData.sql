@@ -8,9 +8,9 @@ INSERT INTO enviroment_server (name) values ('staging');
 
 INSERT INTO `role` (name, is_worker) values ("cutomer v1", 0);
 
-INSERT INTO payment_status ("name") values ("En proceso");
-INSERT INTO payment_status ("name") values ("Rechazado");
-INSERT INTO payment_status ("name") values ("Pagado");
+INSERT INTO payment_status (name) values ("En proceso");
+INSERT INTO payment_status (name) values ("Rechazado");
+INSERT INTO payment_status (name) values ("Pagado");
 
 
 INSERT INTO movie_clasification (name, min_age) VALUES ("A", 12);
@@ -25,6 +25,10 @@ INSERT INTO movie (name, description, category_id, movie_clasification_id) VALUE
 INSERT INTO movie (name, description, category_id, movie_clasification_id) VALUES ("pelicula 2", "Película  de harry potter 2", 2, 2);
 INSERT INTO movie (name, description, category_id, movie_clasification_id) VALUES ("pelicula 3", "Película  de harry potter 3 ", 3, 3);
 
+INSERT INTO function_status (name) VALUES ("Pendiente");
+INSERT INTO function_status (name) VALUES ("En curso");
+INSERT INTO function_status (name) VALUES ("Finalizada");
+INSERT INTO function_status (name) VALUES ("Cancelada");
 
 
 /* SEATS */

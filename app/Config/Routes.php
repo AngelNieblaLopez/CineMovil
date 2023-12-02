@@ -57,6 +57,12 @@ $routes->group('typesRoom', ['namespace' => 'App\Controllers\typeRoom'], functio
     $routes->get('(:num)', 'WebController::show/$1');
     $routes->get('edit/(:num)', 'WebController::edit/$1');
 });
+$routes->group('functions', ['namespace' => 'App\Controllers\function'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
 
 
 
@@ -107,6 +113,13 @@ $routes->group('api', function ($routes) {
         });
         $routes->group('rooms', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\room'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('functions', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\function'], function ($routes) {
                 $routes->post('', "WebController::create");
                 $routes->put('(:num)', "WebController::update/$1");
                 $routes->delete('(:num)', "WebController::delete/$1");
