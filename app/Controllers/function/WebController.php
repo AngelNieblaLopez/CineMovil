@@ -11,12 +11,9 @@ use Predis\Connection\Cluster\RedisCluster;
 
 class WebController extends BaseController
 {
-    protected $roleModel;
-    protected $authModel;
-    protected $typeOfWorkerModel;
-    protected $userModel;
-    protected $workerModel;
     protected $session;
+    protected $roomModel;
+    protected $functionModel;
     protected $db;
 
     public function __construct()
@@ -24,17 +21,15 @@ class WebController extends BaseController
         helper(['form', 'url', 'session']);
         $this->session = \Config\Services::session();
         $this->db = \Config\Database::connect();
-        $this->roleModel = model('RoleModel');
-        $this->authModel = model('AuthModel');
-        $this->typeOfWorkerModel = model('TypeOfWorkerModel');
-        $this->userModel = model('UserModel');
-        $this->workerModel = model('WorkerModel');
+        $this->roomModel = model('RoomModel');
+        $this->functionModel = model('FunctionModel');
+
     }
 
     public function index()
     {
         $whereFetch = "worker.status = 1";
-        $workers = $this->workerModel
+        $functions = $this->functionModel
         ->select("
         worker.id,   
         user.name, 
@@ -44,7 +39,7 @@ class WebController extends BaseController
         ->join('role', 'role.id = user.role_id')
         ->join('type_of_worker', 'type_of_worker.id = worker.type_of_worker_id')
         ->where($whereFetch)->orderBy('user.id', 'asc')->findAll();
-        return view('workers/index', compact('workers'));
+        return view('functions/index', compact('functions'));
 
             
     }
@@ -52,7 +47,7 @@ class WebController extends BaseController
 
     public function show($id = null) {
         $whereFetch = "worker.status = 1";
-        $worker = $this->workerModel
+        $worker = $this->functionModel
         ->join('user', 'worker.user_id = user.id')
         ->select("
         worker.id,   
@@ -72,16 +67,16 @@ class WebController extends BaseController
         $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
 
         if($worker) {
-            return view('workers/show', compact('worker', "roles", "typeOfWorkers"));
+            return view('functions/show', compact('worker', "roles", "typeOfWorkers"));
         } else {
-            return redirect()->to(site_url('/workers'));
+            return redirect()->to(site_url('/functions'));
         }
     }
 
     public function new() {
         $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
         $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-        return view('workers/new', compact("roles", "typeOfWorkers"));
+        return view('functions/new', compact("roles", "typeOfWorkers"));
     }
 
     public function create() {
@@ -103,18 +98,18 @@ class WebController extends BaseController
 
         $userId = $this->db->insertID();
 
-        $this->workerModel->save([
+        $this->functionModel->save([
             "user_id" => $userId,
             "type_of_worker_id" => (int)$this->request->getVar('typeOfWorkerId'),
         ]);
 
         session()->setFlashdata("success", "Se agregó un nuevo trabajador");
-        return redirect()->to(site_url('/workers'));
+        return redirect()->to(site_url('/functions'));
     }
 
     public function edit($id = null) {
         $whereFetch = "worker.status = 1";
-        $worker = $this->workerModel
+        $worker = $this->functionModel
         ->select("
         worker.id,   
         user.name, 
@@ -134,10 +129,10 @@ class WebController extends BaseController
         $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
 
         if($worker) {
-            return view('workers/edit', compact("worker", "roles", "typeOfWorkers"));
+            return view('functions/edit', compact("worker", "roles", "typeOfWorkers"));
         } else {
             session()->setFlashdata('failed', 'Trabajador no encontrado');
-            return redirect()->to('/workers');
+            return redirect()->to('/functions');
         }
     }
 
@@ -155,7 +150,7 @@ class WebController extends BaseController
 
         // $this->db->transException(true)->transStart();
         $whereWorkerFetch = "worker.status = 1";
-        $worker = $this->workerModel
+        $worker = $this->functionModel
         ->select('u.auth_id, worker.user_id')
         ->join('type_of_worker as tof', 'tof.id = worker.type_of_worker_id')
         ->join('user as u', 'u.id = worker.user_id')
@@ -200,14 +195,14 @@ class WebController extends BaseController
             "email" => $email,
         ]);
 
-        $this->workerModel->save([
+        $this->functionModel->save([
             "id" => $id,
             "type_of_worker_id" => $typeOfWorkerId,
         ]);
 
         // $this->db->transComplete();
         session()->setFlashdata('success', "Se modificaron los datos del trabajador");
-        return redirect()->to(base_url('/workers'));
+        return redirect()->to(base_url('/functions'));
 /*     } catch(DatabaseException $e) {
         // error
         $this->db->transRollback();
@@ -219,7 +214,7 @@ class WebController extends BaseController
     public function delete($id = null) {
 
         $whereWorkerFetch = "worker.status = 1 AND user.status = 1";
-        $worker = $this->workerModel
+        $worker = $this->functionModel
         ->where($whereWorkerFetch)
         ->join("user", "user.id = worker.user.id")
         ->find($id);
@@ -228,14 +223,14 @@ class WebController extends BaseController
 
 
 
-        $this->workerModel->save([
+        $this->functionModel->save([
             "id" => $id,
             "status" => 0
         ]);
 
 
         session()->setFlashdata('success', 'Trabajador eliminado');
-        return redirect()->to(base_url('/workers'));
+        return redirect()->to(base_url('/functions'));
     }
     
 }
