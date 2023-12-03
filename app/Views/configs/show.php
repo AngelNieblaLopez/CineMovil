@@ -57,6 +57,18 @@ $this->section('title') ?> Editar configuración
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label">ID de función</label>
+                                    <select disabled class="form-control" id="functionStatus">
+                                        <option disabled value="0">- Seleccione -</option>
+                                        <?php foreach ($functionsStatus as $functionStatus) : ?>
+                                            <option value="<?= $functionStatus['id'] ?>">
+                                                <?= $functionStatus['name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,9 +85,18 @@ $this->section('title') ?> Editar configuración
         let roles = <?= json_encode($roles) ?>;
         let workers = <?= json_encode($workers) ?>;
         let config = <?= json_encode($config) ?>;
+        let functionsStatus = <?= json_encode($functionsStatus) ?>;
+
+        if (functionsStatus.length !== 0) {
+            $("#functionStatus option").each((idx, option) => {
+                option.selected = false;
+                if (option.value == config.default_function_status_id) {
+                    option.selected = true;
+                }
+            });
+        }
 
         if (enviroments.length !== 0) {
-            $('#enviromentServerId').val(config.enviroment_server_id);
             $("#enviroment option").each((idx, option) => {
                 option.selected = false;
                 if (option.value == config.enviroment_server_id) {
@@ -85,7 +106,6 @@ $this->section('title') ?> Editar configuración
         }
 
         if (roles.length !== 0) {
-            $('#defaultCustomerRoleId').val(config.default_customer_role_id);
             $("#defaultCustomerRole option").each((idx, option) => {
                 option.selected = false;
                 if (option.value == config.default_customer_role_id) {
@@ -95,7 +115,6 @@ $this->section('title') ?> Editar configuración
         }
 
         if (workers.length !== 0) {
-            $('#workerAppId').val(config.app_worker_id);
             $("#workerApp option").each((idx, option) => {
                 option.selected = false;
                 if (option.value == config.app_worker_id) {

@@ -61,9 +61,22 @@ $this->section('title') ?> Crear nueva configuración
                                         </select>
                                     </div>
 
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Id de función</label>
+                                        <select class="form-control" id="functionStatus">
+                                            <option disabled value="0">- Seleccione -</option>
+                                            <?php foreach ($functionsStatus as $functionStatus) : ?>
+                                                <option value="<?= $functionStatus['id'] ?>">
+                                                    <?= $functionStatus['name'] ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
                                     <input id="enviromentServerId" hidden name="enviromentServerId">
                                     <input id="defaultCustomerRoleId" hidden name="defaultCustomerRoleId">
                                     <input id="workerAppId" hidden name="workerAppId">
+                                    <input id="functionStatusId" hidden name="functionStatusId">
 
                                     <button type="submit" class="btn btn-success">Guardar configuración</button>
                                 </div>
@@ -82,6 +95,17 @@ $this->section('title') ?> Crear nueva configuración
         let enviroments = <?= json_encode($enviroments) ?>;
         let roles = <?= json_encode($roles) ?>;
         let workers = <?= json_encode($workers) ?>;
+        let functionsStatus = <?= json_encode($functionsStatus) ?>;
+
+        if (functionsStatus.length !== 0) {
+            $('#functionStatusId').val(functionsStatus[0].id);
+            $("#functionStatus option").each((_, option) => {
+                option.selected = false;
+                if (option.value == functionsStatus[0].id) {
+                    option.selected = true;
+                }
+            });
+        }
 
         if (enviroments.length !== 0) {
             $('#enviromentServerId').val(enviroments[0].id);

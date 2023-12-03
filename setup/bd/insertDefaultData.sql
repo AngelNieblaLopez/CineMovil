@@ -1,12 +1,19 @@
 USE cine_movil;
+INSERT INTO `role` (name, is_worker) values ("cutomer v1", 0);
+INSERT INTO `role` (name) values ("App interna");
+
 INSERT INTO type_of_worker(name) values ("Física");
 INSERT INTO type_of_worker (name) values ("App movil");
+
+INSERT INTO auth (password) values ("123456");
+INSERT INTO user (auth_id, name, last_name, second_last_name, role_id, email) values (1, "App movil", "", "", 2, "appmovil@gmail.com");
+INSERT INTO worker (user_id, type_of_worker_id) values (1, 2);
 
 INSERT INTO enviroment_server (name) values ('development');
 INSERT INTO enviroment_server (name) values ('production');
 INSERT INTO enviroment_server (name) values ('staging');
 
-INSERT INTO `role` (name, is_worker) values ("cutomer v1", 0);
+
 
 INSERT INTO payment_status (name) values ("En proceso");
 INSERT INTO payment_status (name) values ("Rechazado");

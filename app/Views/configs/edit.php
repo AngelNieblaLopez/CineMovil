@@ -63,9 +63,22 @@ $this->section('title') ?> Editar configuración
                                         </select>
                                     </div>
 
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Id de función</label>
+                                        <select class="form-control" id="functionStatus">
+                                            <option disabled value="0">- Seleccione -</option>
+                                            <?php foreach ($functionsStatus as $functionStatus) : ?>
+                                                <option value="<?= $functionStatus['id'] ?>">
+                                                    <?= $functionStatus['name'] ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
                                     <input id="enviromentServerId" hidden name="enviromentServerId">
                                     <input id="defaultCustomerRoleId" hidden name="defaultCustomerRoleId">
                                     <input id="workerAppId" hidden name="workerAppId">
+                                    <input id="functionStatusId" hidden name="functionStatusId">
 
                                     <button type="submit" class="btn btn-success">Guardar configuración</button>
                                 </div>
@@ -84,6 +97,17 @@ $this->section('title') ?> Editar configuración
         let roles = <?= json_encode($roles) ?>;
         let workers = <?= json_encode($workers) ?>;
         let config = <?= json_encode($config) ?>;
+        let functionsStatus = <?= json_encode($functionsStatus) ?>;
+
+        if (functionsStatus.length !== 0) {
+            $('#functionStatusId').val(config.default_function_status_id);
+            $("#functionStatus option").each((idx, option) => {
+                option.selected = false;
+                if (option.value == config.default_function_status_id) {
+                    option.selected = true;
+                }
+            });
+        }
 
         if (enviroments.length !== 0) {
             $('#enviromentServerId').val(config.enviroment_server_id);
@@ -125,6 +149,10 @@ $this->section('title') ?> Editar configuración
 
         $('#workerApp').change(function() {
             $('#workerAppId').val($(this).val());
+        });
+
+        $('#functionStatus').change(function() {
+            $('#functionStatusId').val($(this).val());
         });
     });
 </script>

@@ -16,6 +16,7 @@ class WebController extends BaseController
     protected $enviromentServerModel;
     protected $roleModel;
     protected $workerModel;
+    protected $functionStatusModel;
     protected $session;
     protected $db;
 
@@ -27,6 +28,7 @@ class WebController extends BaseController
         $this->configModel = model('ConfigModel');
         $this->enviromentServerModel = model('EnviromentServerModel');
         $this->roleModel = model('RoleModel');
+        $this->functionStatusModel = model('FunctionStatusModel');
         $this->workerModel = model('WorkerModel');
     }
 
@@ -51,6 +53,7 @@ class WebController extends BaseController
 
         $enviroments = $this->enviromentServerModel->where('status = 1')->findAll();
         $roles = $this->roleModel->where('status = 1')->findAll();
+        $functionsStatus = $this->functionStatusModel->where("status = 1")->findAll();
         $workers = $this->workerModel
         ->select("worker.id, user.name AS user_name")
         ->join("user","user.id = worker.user_id ")
@@ -58,11 +61,11 @@ class WebController extends BaseController
         ->findAll();
 
         $config = $this->configModel
-            ->select("id, name, enviroment_server_id, default_customer_role_id, app_worker_id")
+            ->select("id, name, enviroment_server_id, default_customer_role_id, app_worker_id, default_function_status_id")
             ->where("status = 1")->find((int)$id);
 
         if ($config) {
-            return view('configs/show', compact('config', 'enviroments', 'roles', 'workers'));
+            return view('configs/show', compact('config', 'enviroments', 'roles', 'workers', "functionsStatus"));
         } else {
             return redirect()->to(site_url('/configs'));
         }
@@ -72,6 +75,7 @@ class WebController extends BaseController
     {
         $enviroments = $this->enviromentServerModel->where('status = 1')->findAll();
         $roles = $this->roleModel->where('status = 1')->findAll();
+        $functionsStatus = $this->functionStatusModel->where("status = 1")->findAll();
         $workers = $this->workerModel
         ->select("worker.id, user.name AS user_name")
         ->join("user","user.id = worker.user_id ")
@@ -79,13 +83,15 @@ class WebController extends BaseController
         ->findAll();
 
 
-        return view('configs/new', compact("enviroments", "roles", "workers"));
+        return view('configs/new', compact("enviroments", "roles", "workers", "functionsStatus"));
     }
 
     public function edit($id = null)
     {
         $enviroments = $this->enviromentServerModel->where('status = 1')->findAll();
         $roles = $this->roleModel->where('status = 1')->findAll();
+        $functionsStatus = $this->functionStatusModel->where("status = 1")->findAll();
+        
         $workers = $this->workerModel
         ->select("worker.id, user.name AS user_name")
         ->join("user","user.id = worker.user_id ")
@@ -93,11 +99,11 @@ class WebController extends BaseController
         ->findAll();
 
         $config = $this->configModel
-            ->select("id, name, enviroment_server_id, default_customer_role_id, app_worker_id")
+            ->select("id, name, enviroment_server_id, default_customer_role_id, app_worker_id, default_function_status_id")
             ->where("status = 1")->find((int)$id);
 
         if ($config) {
-            return view('configs/edit', compact("config", "enviroments", "roles", "workers"));
+            return view('configs/edit', compact("config", "enviroments", "roles", "workers", "functionsStatus"));
         } else {
             session()->setFlashdata('failed', 'Configuración no encontrado');
             return redirect()->to('/configs');
@@ -112,6 +118,7 @@ class WebController extends BaseController
         $enviromentServerId = $this->request->getVar('enviromentServerId');
         $defaultCustomerRoleId = $this->request->getVar('defaultCustomerRoleId');
         $workerAppId = $this->request->getVar('workerAppId');
+        $functionStatusId = $this->request->getVar('functionStatusId');
 
         $enviroment = $this->enviromentServerModel->where("status = 1")->find($enviromentServerId);
         if (!$enviroment) {
@@ -123,16 +130,24 @@ class WebController extends BaseController
             throw new Exception("Rol no encontrado");
         }
 
-        $worker = $this->roleModel->where("status = 1")->find($workerAppId);
+        $worker = $this->workerModel->where("status = 1")->find($workerAppId);
         if (!$worker) {
             throw new Exception("Trabajador no encontrado");
         }
 
+        $functionStatus = $this->functionStatusModel->where("status = 1")->find($functionStatusId);
+        if (!$functionStatus) {
+            throw new Exception("Estatus de función no encontrado");
+        }
+
+
         $this->configModel->save([
             "name" => $this->request->getVar('name'),
+
             "enviroment_server_id" => $enviromentServerId,
             "default_customer_role_id" => $defaultCustomerRoleId,
-            "app_worker_id" => $workerAppId
+            "app_worker_id" => $workerAppId,
+            "default_function_status_id" => $functionStatusId
         ]);
 
 
@@ -145,9 +160,10 @@ class WebController extends BaseController
         $enviromentServerId = $this->request->getVar('enviromentServerId');
         $defaultCustomerRoleId = $this->request->getVar('defaultCustomerRoleId');
         $workerAppId = $this->request->getVar('workerAppId');
+        $functionStatusId = $this->request->getVar('functionStatusId');
 
         $config = $this->configModel->where("status = 1")->find($id);
-
+        
         if (!$config) {
             throw new Exception("Configuración no encontrada");
         }
@@ -167,12 +183,19 @@ class WebController extends BaseController
             throw new Exception("Trabajador no encontrado");
         }
 
+        $functionStatus = $this->functionStatusModel->where("status = 1")->find($functionStatusId);
+        if (!$functionStatus) {
+            throw new Exception("Estatus de función no encontrado");
+        }
+
         $this->configModel->save([
             "id" => $id,
             "name" => $this->request->getVar('name'),
+
             "enviroment_server_id" => $enviromentServerId,
             "default_customer_role_id" => $defaultCustomerRoleId,
-            "app_worker_id" => $workerAppId
+            "app_worker_id" => $workerAppId,
+            "default_function_status_id" => $functionStatusId
         ]);
 
         session()->setFlashdata("success", "Modificación existosa");
