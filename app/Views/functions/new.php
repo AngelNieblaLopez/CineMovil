@@ -21,7 +21,7 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
                                     <h5 class="card-title">Crear función</h5>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Fecha de inicio</label>
-                                        <input type="datetime" class="form-control" name="startDate">
+                                        <input type="datetime-local" class="form-control" name="startDate">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class="form-label">Película</label>

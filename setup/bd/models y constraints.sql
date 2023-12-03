@@ -69,6 +69,7 @@ CREATE TABLE movie (
     description varchar(3024),
     category_id INT NOT NULL,
     movie_clasification_id INT NOT NULL,
+    duration INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -275,6 +276,7 @@ CREATE TABLE config (
     
     enviroment_server_id INT NOT NULL,
     default_customer_role_id INT NOT NULL,
+    default_function_status_id INT NOT NULL,
     app_worker_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -428,3 +430,6 @@ REFERENCES `role` (id);
 
 ALTER TABLE config ADD CONSTRAINT config_worker FOREIGN KEY(app_worker_id)
 REFERENCES worker (id);
+
+ALTER TABLE config ADD CONSTRAINT config_function_status FOREIGN KEY(default_function_status_id)
+REFERENCES function_status (id);
