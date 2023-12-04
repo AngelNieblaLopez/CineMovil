@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class MoviewModel extends Model
+class MovieModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'movie';

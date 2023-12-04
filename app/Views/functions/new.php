@@ -21,7 +21,7 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
                                     <h5 class="card-title">Crear función</h5>
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Fecha de inicio</label>
-                                        <input type="datetime-local" class="form-control" name="startDate">
+                                        <input type="datetime-local" class="form-control" name="startDate" id="startDate" min="2000-01-02T00:00:00">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class="form-label">Película</label>
@@ -48,7 +48,7 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
                                 
                                     <input id="roomId" hidden name="roomId">
                                     <input id="movieId" hidden name="movieId">
-                                    <button type="submit" class="btn btn-success">Guardar rol</button>
+                                    <button type="submit" class="btn btn-success">Guardar función</button>
                                 </div>
                             </div>
                         </div>
@@ -64,6 +64,9 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
         let rooms = <?= json_encode($rooms) ?>;
         let movies = <?= json_encode($movies) ?>;
 
+        let minDate = new Date();
+        minDate.setDate(minDate.getDate() - 1);
+        $("#startDate").attr("min", minDate.toISOString().slice(0, 16));
 
         if (rooms.length !== 0) {
             $('#roomId').val(rooms[0].id);

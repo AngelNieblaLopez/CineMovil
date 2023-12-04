@@ -22,7 +22,7 @@ $this->section('title') ?> Editar función <?= $this->endSection() ?>
 
                                     <div class="form-group mb-3">
                                         <label clas="form-label">Fecha de inicio</label>
-                                        <input type="datetime" class="form-control" name="startDate"  value="<?= trim($role["start_date"]) ?>">
+                                        <input type="datetime-local" class="form-control" name="startDate" id="startDate"  value="<?= trim($function["start_date"]) ?>">
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -80,6 +80,9 @@ $this->section('title') ?> Editar función <?= $this->endSection() ?>
         let movies = <?= json_encode($movies) ?>;
         let functionsStatus = <?= json_encode($functionsStatus) ?>;
 
+        let minDate = new Date();
+        minDate.setDate(minDate.getDate() - 1);
+        $("#startDate").attr("min", minDate.toISOString().slice(0, 16));
 
         if (rooms.length !== 0) {
             $('#roomId').val(_function.room_id);
@@ -91,16 +94,16 @@ $this->section('title') ?> Editar función <?= $this->endSection() ?>
         }
 
         if (movies.length !== 0) {
-            $('#movieId').val(_function.movieId);
+            $('#movieId').val(_function.movie_id);
             $("#movie option").each((_, option) => {
-                if (option.value == _function.movieId) {
+                if (option.value == _function.movie_id) {
                     option.selected = true
                 }
             })
         }
 
         if (functionsStatus.length !== 0) {
-            $('#functionStatusId').val(_function.function_status_name);
+            $('#functionStatusId').val(_function.function_status_id);
             $("#functionStatus option").each((_, option) => {
                 if (option.value == _function.function_status_name) {
                     option.selected = true

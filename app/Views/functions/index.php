@@ -49,7 +49,7 @@ $this->section('title'); ?> Listado de funciones <?= $this->endSection(); ?>
                                 <tr>
                                     <td> <?= $function['id'] ?> </td>
                                     <td> <?= $function['room_name'] ?> </td>
-                                    <td> <?= $function['startDate'] ?> </td>
+                                    <td> <?= $function['start_date'] ?> </td>
                                     <td> <?= $function['function_status_name'] ?> </td>
                                     <td> <?= $function['movie_name'] ?> </td>
                                     <td class="d-flex">

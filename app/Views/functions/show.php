@@ -1,12 +1,12 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
+$this->section('title') ?> Detalle función <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 
 <div class="container">
     <div class="row py-4">
         <div class="col-xl-12 text-end">
-            <a href="<?= base_url('funciones') ?>" class="btn btn-primary">Regresar a funciones</a>
+            <a href="<?= base_url('functions') ?>" class="btn btn-primary">Regresar a funciones</a>
         </div>
     </div>
 
@@ -18,7 +18,7 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
                         <h5 class="card-title">Detalle función</h5>
                         <div class="form-group mb-3">
                             <label clas="form-label">Fecha de inicio</label>
-                            <input type="datetime" class="form-control" name="startDate" disabled value="<?= trim($role["start_date"]) ?>">
+                            <input type="datetime" class="form-control" name="startDate" disabled value="<?= trim($function["start_date"]) ?>">
                         </div>
 
                         <div class="form-group mb-3">
@@ -81,7 +81,7 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
         if (movies.length !== 0) {
             $('#movieId').val(movies[0].id);
             $("#movie option").each((_, option) => {
-                if (option.value == _function.movieId) {
+                if (option.value == _function.movie_id) {
                     option.selected = true
                 }
             })
@@ -90,7 +90,7 @@ $this->section('title') ?> Crear nueva función <?= $this->endSection() ?>
         if (functionsStatus.length !== 0) {
             $('#functionStatusId').val(functionsStatus[0].id);
             $("#functionStatus option").each((_, option) => {
-                if (option.value == _function.function_status_name) {
+                if (option.value == _function.function_status_id) {
                     option.selected = true
                 }
             })

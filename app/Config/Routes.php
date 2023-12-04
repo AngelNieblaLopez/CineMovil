@@ -127,10 +127,15 @@ $routes->group('api', function ($routes) {
         });
     });
     $routes->group('rest', function ($routes) {
-        $routes->group('client', function ($routes) {
+        $routes->group('clients', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\client'], function ($routes) {
                 $routes->get('login', "RestController::login");
                 $routes->post('', "RestController::create");
+            });
+        });
+        $routes->group('functions', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\function'], function ($routes) {
+                $routes->get('available', "RestController::available");
             });
         });
     });

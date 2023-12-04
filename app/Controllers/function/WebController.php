@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Error;
 use Exception;
 use Predis\Connection\Cluster\RedisCluster;
+use Carbon\Carbon;
 
 class WebController extends BaseController
 {
@@ -55,14 +56,14 @@ class WebController extends BaseController
         $whereFetch = "status = 1";
         $function = $this->functionModel
             ->select("id, start_date, room_id, function_status_id, movie_id")
-            ->where($whereFetch)->find((int)$id);
+            ->where("status = 1")->find($id);
 
         $rooms = $this->roomModel->where("status = 1")->findAll();
         $functionsStatus = $this->functionStatusModel->where("status = 1")->findAll();
         $movies = $this->movieModel->where("status = 1")->findAll();
 
         if ($function) {
-            return view('functions/show', compact('rooms', "functionsStatus", "movies"));
+            return view('functions/show', compact('function','rooms', "functionsStatus", "movies"));
         } else {
             return redirect()->to(site_url('/functions'));
         }
@@ -71,10 +72,9 @@ class WebController extends BaseController
     public function new()
     {
         $rooms = $this->roomModel->where("status = 1")->findAll();
-        $functionsStatus = $this->functionStatusModel->where("status = 1")->findAll();
         $movies = $this->movieModel->where("status = 1")->findAll();
 
-        return view('functions/new', compact("rooms", "functionsStatus", "movies"));
+        return view('functions/new', compact("rooms", "movies"));
     }
 
     public function create()
@@ -95,7 +95,7 @@ class WebController extends BaseController
 
         $this->functionModel->save([
             "room_id" => $roomId,
-            "function_status_id" => $config["default_function_status_id"],
+            "function_status_id" => $config[0]["default_function_status_id"],
             "movie_id" => $movieId,
             "start_date" => $startDate,
         ]);
@@ -106,121 +106,78 @@ class WebController extends BaseController
 
     public function edit($id = null)
     {
-        $whereFetch = "function.status = 1";
         $function = $this->functionModel
-            ->select("
-        function.id,   
-        user.name, 
-        user.last_name, 
-        user.second_last_name,
-        user.email,
-        auth.password,
-        user.role_id,
-        function.type_of_worker_id")
-            ->join('user', 'function.user_id = user.id')
-            ->join('auth', 'auth.id = user.auth_id')
-            ->join('role', 'role.id = user.role_id')
-            ->join('type_of_worker', 'type_of_worker.id = function.type_of_worker_id')
-            ->where($whereFetch)->find((int)$id);
+            ->select("id, start_date, room_id, function_status_id, movie_id")
+            ->where("function.status = 1")->find($id);
 
-        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-        $typeOfWorkers = $this->typeOfWorkerModel->where("status = 1")->orderBy('id', 'asc')->findAll();
+        $rooms = $this->roomModel->where("status = 1")->findAll();
+        $functionsStatus = $this->functionStatusModel->where("status = 1")->findAll();
+        $movies = $this->movieModel->where("status = 1")->findAll();
 
         if ($function) {
-            return view('functions/edit', compact("function", "roles", "typeOfWorkers"));
+            return view('functions/edit', compact("function", "rooms", "functionsStatus", "movies"));
         } else {
-            session()->setFlashdata('failed', 'Trabajador no encontrado');
+            session()->setFlashdata('failed', 'Configuración no encontrado');
             return redirect()->to('/functions');
         }
     }
 
     public function update($id = null)
     {
-
-        /*   try { */
-        $roleId = $this->request->getVar('roleId');
-        $typeOfWorkerId = $this->request->getVar('typeOfWorkerId');
-        $password = $this->request->getVar('password');
-        $name = $this->request->getVar('name');
-        $lastName = $this->request->getVar('lastName');
-        $secondLastName = $this->request->getVar('secondLastName');
-        $email = $this->request->getVar('email');
+        $roomId = $this->request->getVar('roomId');
+        $movieId = $this->request->getVar('movieId');
+        $startDate = $this->request->getVar('startDate');
+        $functionStatusId = $this->request->getVar('functionStatusId');
 
 
-        // $this->db->transException(true)->transStart();
-        $whereWorkerFetch = "function.status = 1";
-        $function = $this->functionModel
-            ->select('u.auth_id, function.user_id')
-            ->join('type_of_worker as tof', 'tof.id = function.type_of_worker_id')
-            ->join('user as u', 'u.id = function.user_id')
-            ->join('auth as a', 'a.id = u.auth_id')
-            ->join('role as r', 'r.id = u.role_id')
-            ->where($whereWorkerFetch)->find($id);
-
+        $function = $this->functionModel->select("id")->where("function.status = 1")->find($id);
         if (!$function) {
-            throw new Exception("Trabajador no encontrado");
+            throw new Exception("Función no encontrado");
         }
 
-        $role =  $this->roleModel
+        $room =  $this->roomModel
             ->where("status = 1")
-            ->find($roleId);
+            ->find($roomId);
 
-        if (!$role) {
-            throw new Exception("Role no encontrado");
+        if (!$room) {
+            throw new Exception("Sala no encontrada");
         }
 
-
-        $typeOfWorker =  $this->typeOfWorkerModel
+        $movie =  $this->movieModel
             ->where("status = 1")
-            ->find($typeOfWorkerId);
+            ->find($movieId);
 
-        if (!$typeOfWorker) {
-            throw new Exception("Tipo de trabajador no encontrado");
+        if (!$movie) {
+            throw new Exception("Película no encontrada");
         }
 
-        /* UPDATE */
-        $this->authModel->save([
-            "id" => (int)$function["auth_id"],
-            "password" => $password,
-        ]);
+        $functionStatus =  $this->functionStatusModel
+            ->where("status = 1")
+            ->find($functionStatusId);
 
-
-        $this->userModel->save([
-            "id" => (int)$function["user_id"],
-            "name" => $name,
-            "last_name" => $lastName,
-            "second_last_name" => $secondLastName,
-            "role_id" => (int)$roleId,
-            "email" => $email,
-        ]);
+        if (!$functionStatus) {
+            throw new Exception("Estatus de función no encontrada");
+        }
 
         $this->functionModel->save([
             "id" => $id,
-            "type_of_worker_id" => $typeOfWorkerId,
+            "room_id" => $roomId,
+            "start_date" => $startDate,
+            "function_status_id" => $functionStatusId,
+            "movie_id" => $movieId
         ]);
 
-        // $this->db->transComplete();
-        session()->setFlashdata('success', "Se modificaron los datos del trabajador");
+        session()->setFlashdata('success', "Se modificaron los datos de la función");
         return redirect()->to(base_url('/functions'));
-        /*     } catch(DatabaseException $e) {
-        // error
-        $this->db->transRollback();
-        return session()->setFlashdata('failed', 'Trabajador no encontrado');
-    } */
     }
 
     public function delete($id = null)
     {
+        $function = $this->functionModel->where("status = 1")->find($id);
 
-        $whereWorkerFetch = "function.status = 1 AND user.status = 1";
-        $function = $this->functionModel
-            ->where($whereWorkerFetch)
-            ->join("user", "user.id = function.user.id")
-            ->find($id);
-
-
-
-
+        if(!$function) {
+            throw new Exception("Función no encontrada");
+        }
 
         $this->functionModel->save([
             "id" => $id,
@@ -228,7 +185,7 @@ class WebController extends BaseController
         ]);
 
 
-        session()->setFlashdata('success', 'Trabajador eliminado');
+        session()->setFlashdata('success', 'Función eliminada');
         return redirect()->to(base_url('/functions'));
     }
 }
