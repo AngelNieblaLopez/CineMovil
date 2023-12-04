@@ -247,17 +247,28 @@ CREATE TABLE type_of_worker (
 
 CREATE TABLE payment_info (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    total DECIMAL(12,3),
-    taxes DECIMAL (12,3),
-    subtotal DECIMAL (12,3),
+    total DECIMAL(12,3) NOT NULL,
+    taxes DECIMAL (12,3) NOT NULL,
+    subtotal DECIMAL (12,3) NOT NULL,
     payment_status_id INT NOT NULL,
-    
+    payment_card_id INT NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     status bit NOT NULL DEFAULT 1
 );
 
+CREATE TABLE payment_card (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    owner VARCHAR(256) NOT NULL,
+    card_number VARCHAR(256) NOT NULL,
+    cvv VARCHAR(5) NOT NULL,
+    expiration_date varchar(5) NOT NULL,
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status bit NOT NULL DEFAULT 1
+);
 
 
 CREATE TABLE payment_status (
@@ -419,6 +430,9 @@ REFERENCES user (id);
 -- Payment info
 ALTER TABLE payment_info ADD CONSTRAINT payment_info_payment_status FOREIGN KEY(payment_status_id)
 REFERENCES payment_status (id);
+
+ALTER TABLE payment_info ADD CONSTRAINT payment_payment_card FOREIGN KEY(payment_card_id)
+REFERENCES payment_card (id);
 
 -- config
 

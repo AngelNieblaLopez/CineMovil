@@ -63,6 +63,10 @@ $routes->group('functions', ['namespace' => 'App\Controllers\function'], functio
     $routes->get('(:num)', 'WebController::show/$1');
     $routes->get('edit/(:num)', 'WebController::edit/$1');
 });
+$routes->group('sales', ['namespace' => 'App\Controllers\sale'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('(:num)', 'WebController::show/$1');
+});
 
 
 
@@ -136,6 +140,11 @@ $routes->group('api', function ($routes) {
         $routes->group('functions', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\function'], function ($routes) {
                 $routes->get('available', "RestController::available");
+            });
+        });
+        $routes->group('sales', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\sale'], function ($routes) {
+                $routes->get('create', "RestController::create");
             });
         });
     });
