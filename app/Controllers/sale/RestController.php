@@ -59,13 +59,14 @@ class RestController extends ResourceController
             $stringSeatsIds .= $seatId;
         }
 
+        $seats
 
         $seats = $seatOfFunctionModel
         ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
         ->where("seat_of_function.status = 1 AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
 
 
-        if(count($seats) == count($seatsIds)) {
+        if(count($seats) !== count($seatsIds)) {
 
         }
 

@@ -142,9 +142,9 @@ $routes->group('api', function ($routes) {
                 $routes->get('available', "RestController::available");
             });
         });
-        $routes->group('sales', function ($routes) {
-            $routes->group('v1', ['namespace' => 'App\Controllers\sale'], function ($routes) {
-                $routes->get('create', "RestController::create");
+        $routes->group('cinemas', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\cinema'], function ($routes) {
+                $routes->get('', "RestController::index");
             });
         });
     });

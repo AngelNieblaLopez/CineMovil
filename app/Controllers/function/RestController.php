@@ -43,7 +43,6 @@ class RestController extends ResourceController
      */
     public function available()
     {
-        $envv = ENVIRONMENT;
 
         $functions = $this->functionModel
             ->select("function_status_id, movie.duration AS movie_duration, start_date, room.name AS room_name, movie.name AS movie_name, movie.id AS movie_id, DATE_ADD(function.start_date, INTERVAL movie.duration MINUTE) AS dateADdd, NOW() AS nowdate")
