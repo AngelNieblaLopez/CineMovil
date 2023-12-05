@@ -1,6 +1,6 @@
 USE cine_movil;
 INSERT INTO `role` (name, is_worker) values ("cutomer v1", 0);
-INSERT INTO `role` (name) values ("App interna");
+INSERT INTO `role` (name, is_worker) values ("App interna", 0);
 
 INSERT INTO type_of_worker(name) values ("Física");
 INSERT INTO type_of_worker (name) values ("App movil");
@@ -28,9 +28,9 @@ INSERT INTO category (name, description) VALUES ("Animada", "Pelicula animada");
 INSERT INTO category (name, description) VALUES ("Live action", "Película live action animada");
 INSERT INTO category (name, description) VALUES ("Horror", "Película de miedo");
 
-INSERT INTO movie (name, description, category_id, movie_clasification_id) VALUES ("pelicula 1", "Película  de harry potter 1", 1, 1);
-INSERT INTO movie (name, description, category_id, movie_clasification_id) VALUES ("pelicula 2", "Película  de harry potter 2", 2, 2);
-INSERT INTO movie (name, description, category_id, movie_clasification_id) VALUES ("pelicula 3", "Película  de harry potter 3 ", 3, 3);
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration) VALUES ("pelicula 1", "Película  de harry potter 1", 1, 120);
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration) VALUES ("pelicula 2", "Película  de harry potter 2", 2, 100);
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration) VALUES ("pelicula 3", "Película  de harry potter 3 ", 3, 200);
 
 INSERT INTO function_status (name) VALUES ("Pendiente");
 INSERT INTO function_status (name) VALUES ("En curso");
