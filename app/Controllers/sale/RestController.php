@@ -6,6 +6,7 @@ use App\Models\ConfigModel;
 use App\Models\AuthModel;
 use App\Models\UserModel;
 use App\Models\ClientModel;
+use App\Models\SeatOfFunctionModel;
 use Exception;
 
 class RestController extends ResourceController
@@ -17,6 +18,7 @@ class RestController extends ResourceController
     protected $authModel;
     protected $userModel;
     protected $clientModel;
+    protected $seatOfFunctionModel;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ class RestController extends ResourceController
         $this->authModel = new AuthModel();
         $this->userModel = new UserModel();
         $this->clientModel = new ClientModel();
+        $this->seatOfFunctionModel = new SeatOfFunctionModel();
     }
     
 
@@ -42,43 +45,30 @@ class RestController extends ResourceController
         $json = $this->request->getJSON();
 
 
+        $function = $json->functionId;
         $clientId = $json->clientId;
-        $name = $json->name;
-        $lastName = $json->lastName;
-        $secondLastName = $json->secondLastName;
-        $email = $json->email;
+        $sellerId = $json->sellerId;
+        $owner = $json->owner;
+        $card_number = $json->card_number;
+        $cvv = $json->cvv;
+        $expiration_date = $json->expiration_date;
+        $seatsIds = $json->seatsIds;
 
-
-        $envv = ENVIRONMENT;
-        $config = $this->configModel
-            ->join('enviroment_server', "enviroment_server.id = config.enviroment_server_id")
-            ->where("config.status = 1 AND enviroment_server.name = '$envv'")->orderBy('config.id', 'asc')->findAll();
-
-
-        if (count($config) == 0) {
-            throw new Exception("Enviroment no establecido");
+        $stringSeatsIds = "";
+        foreach ($seatsIds as $seatId) {
+            $stringSeatsIds .= $seatId;
         }
 
-        $this->authModel->save([
-            "password" => $password,
-        ]);
 
-        $authId = $this->db->insertID();
+        $seats = $seatOfFunctionModel
+        ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
+        ->where("seat_of_function.status = 1 AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
 
-        $this->userModel->save([
-            "auth_id" => $authId,
-            "name" => $name,
-            "last_name" => $lastName,
-            "second_last_name" => $secondLastName,
-            "role_id" => $config[0]["default_customer_role_id"],
-            "email" => $email,
-        ]);
 
-        $userId = $this->db->insertID();
+        if(count($seats) == count($seatsIds)) {
 
-        $this->clientModel->save([
-            "user_id" => $userId,
-        ]);
+        }
+
 
         $respuesta = [
             'error' => null,
