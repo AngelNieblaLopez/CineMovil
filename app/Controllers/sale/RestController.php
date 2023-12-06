@@ -11,6 +11,7 @@ use App\Models\PaymentInfoModel;
 use App\Models\SaleDetailModel;
 use App\Models\SaleModel;
 use App\Models\SeatOfFunctionModel;
+use App\Models\SeatOfRoomModel;
 use Exception;
 
 class RestController extends ResourceController
@@ -23,6 +24,7 @@ class RestController extends ResourceController
     protected $userModel;
     protected $clientModel;
     protected $seatOfFunctionModel;
+    protected $seatOfRoomModel;
     protected $saleDetailModel;
     protected $saleModel;
     protected $paymentInfoModel;
@@ -38,6 +40,7 @@ class RestController extends ResourceController
         $this->userModel = new UserModel();
         $this->clientModel = new ClientModel();
         $this->seatOfFunctionModel = new SeatOfFunctionModel();
+        $this->seatOfRoomModel = new SeatOfRoomModel();
         $this->saleDetailModel = new SaleDetailModel();
         $this->saleModel = new SaleModel();
         $this->paymentInfoModel = new PaymentInfoModel();
@@ -83,17 +86,20 @@ class RestController extends ResourceController
             throw new Exception("No se enviaron asientos");
         }
 
-        $stringSeatsIds = "";
-        foreach ($seatsIds as $seatId) {
-            $stringSeatsIds .= $seatId;
-        }
 
-    
+        
+        $stringSeatsIds = implode(',', $seatsIds);
+
         $seats = $this->seatOfFunctionModel
-        ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
-        ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
-        ->where("seat_of_function.status = 1 AND seat_of_function.function_id = '$functionId'  AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
+        // ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
+        // ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
+        ->where("seat_of_function.seat_of_room_id IN ('1','2','3')")
+        ->findAll();
 
+
+        $as = $this->seatOfRoomModel
+        ->where("id IN ('1','2' ,'3')")
+        ->findAll();
 
         if(count($seats) !== count($seatsIds)) {
             throw new Exception("Los asientos no fueron encontrados");

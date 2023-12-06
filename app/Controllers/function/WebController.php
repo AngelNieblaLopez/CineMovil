@@ -18,6 +18,8 @@ class WebController extends BaseController
     protected $movieModel;
     protected $configModel;
     protected $functionStatusModel;
+    protected $seatOfFunctionModel;
+    protected $seatOfRoomModel;
     protected $db;
 
     public function __construct()
@@ -30,6 +32,8 @@ class WebController extends BaseController
         $this->movieModel = model('MovieModel');
         $this->functionStatusModel = model('FunctionStatusModel');
         $this->configModel = model("ConfigModel");
+        $this->seatOfFunctionModel = model("SeatOfFunctionModel");
+        $this->seatOfRoomModel = model("SeatOfRoomModel");
     }
 
     public function index()
@@ -99,6 +103,25 @@ class WebController extends BaseController
             "movie_id" => $movieId,
             "start_date" => $startDate,
         ]);
+
+        $functionId = $this->db->insertID();
+        
+        $allSeats = $this->seatOfRoomModel
+        ->select("seat_of_room.id AS seatId, type_room.price")
+        ->join('room', 'room.id = seat_of_room.room_id')
+        ->join('type_room', 'type_room.id = room.type_room_id')
+        ->where("seat_of_room.status = 1 AND room.id = '$roomId'")
+        ->findAll();
+
+      
+
+        foreach($allSeats as $seat) {
+            $this->seatOfFunctionModel->save([
+                "seat_of_room_id" => $seat["seatId"],
+                "price" => $seat["price"],
+                "function_id" => $functionId
+            ]);
+        }        
 
         session()->setFlashdata("success", "Se creó una nueva función");
         return redirect()->to(site_url('/functions'));
