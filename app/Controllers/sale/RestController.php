@@ -6,6 +6,10 @@ use App\Models\ConfigModel;
 use App\Models\AuthModel;
 use App\Models\UserModel;
 use App\Models\ClientModel;
+use App\Models\PaymentCardModel;
+use App\Models\PaymentInfoModel;
+use App\Models\SaleDetailModel;
+use App\Models\SaleModel;
 use App\Models\SeatOfFunctionModel;
 use Exception;
 
@@ -19,6 +23,10 @@ class RestController extends ResourceController
     protected $userModel;
     protected $clientModel;
     protected $seatOfFunctionModel;
+    protected $saleDetailModel;
+    protected $saleModel;
+    protected $paymentInfoModel;
+    protected $paymentCardModel;
 
     public function __construct()
     {
@@ -30,6 +38,10 @@ class RestController extends ResourceController
         $this->userModel = new UserModel();
         $this->clientModel = new ClientModel();
         $this->seatOfFunctionModel = new SeatOfFunctionModel();
+        $this->saleDetailModel = new SaleDetailModel();
+        $this->saleModel = new SaleModel();
+        $this->paymentInfoModel = new PaymentInfoModel();
+        $this->paymentCardModel = new PaymentCardModel();
     }
     
 
@@ -41,35 +53,100 @@ class RestController extends ResourceController
      */
     public function create()
     {
+        $envv = ENVIRONMENT;
+        $config = $this->configModel
+            ->join('enviroment_server', "enviroment_server.id = config.enviroment_server_id")
+            ->where("config.status = 1 AND enviroment_server.name = '$envv'")->orderBy('config.id', 'asc')->findAll();
+
+        if (count($config) == 0) {
+            throw new Exception("Enviroment no establecido");
+        }
+
         // Obtener el contenido de la solicitud como JSON
         $json = $this->request->getJSON();
 
 
-        $function = $json->functionId;
+        $functionId = $json->functionId;
         $clientId = $json->clientId;
-        $sellerId = $json->sellerId;
+        $workerId = $config[0]["app_worker_id"];
+
         $owner = $json->owner;
-        $card_number = $json->card_number;
+        $cardNumber = $json->cardNumber;
         $cvv = $json->cvv;
-        $expiration_date = $json->expiration_date;
+        $expirationDate = $json->expirationDate;
         $seatsIds = $json->seatsIds;
+
+        $subtotal = 0;
+        $taxes = 0;
+        $total = 0;
+        if(count($seatsIds) == 0) {
+            throw new Exception("No se enviaron asientos");
+        }
 
         $stringSeatsIds = "";
         foreach ($seatsIds as $seatId) {
             $stringSeatsIds .= $seatId;
         }
 
-        $seats
-
-        $seats = $seatOfFunctionModel
+    
+        $seats = $this->seatOfFunctionModel
+        ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
         ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
-        ->where("seat_of_function.status = 1 AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
+        ->where("seat_of_function.status = 1 AND seat_of_function.function_id = '$functionId'  AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
 
 
         if(count($seats) !== count($seatsIds)) {
-
+            throw new Exception("Los asientos no fueron encontrados");
         }
 
+        $seatsBuyed = $this->seatOfFunctionModel
+        ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
+        ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
+        ->join('sale_detail', 'sale_detail.seat_of_function_id = seat_of_function.id')
+        ->where("seat_of_function.status = 1 AND seat_of_function.function_id = '$functionId' AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
+        
+        if(count($seatsBuyed) !== 0) {
+            throw new Exception("Hay asientos ya comprados");
+        }
+
+        foreach ($seats as $seat) {
+            $subtotal += $seat["priceSeat"];
+        }
+        
+        $taxes = $subtotal * 0.16;
+        $total = $subtotal + $taxes;
+
+        $this->paymentCardModel->save([
+            "owner" => $owner,
+            "card_number" => $cardNumber,
+            "cvv" => $cvv,
+            "expiration_date" => $expirationDate
+        ]);
+
+        $paymentCardId = $this->db->insertID();
+
+        $this->paymentInfoModel->save([
+            "total" => $total,
+            "taxes" => $taxes,
+            "subtotal" => $subtotal,
+            "payment_card_id" => $paymentCardId,
+            "payment_status_id" => 3
+        ]);
+        
+        $paymentInfoId = $this->db->insertID();
+        $this->saleModel->save([
+            "client_id" => $clientId,
+            "worker_id" => $workerId,
+            "payment_info_id" => $paymentInfoId,
+        ]);
+
+        $saleId = $this->db->insertID();
+        foreach ($seats as $seat) {
+            $this->saleDetailModel->save([
+                "sale_id" => $saleId,
+                "seat_of_function_id" => $seat["seat_of_function_id"]
+            ]);
+        }
 
         $respuesta = [
             'error' => null,

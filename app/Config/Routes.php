@@ -147,5 +147,10 @@ $routes->group('api', function ($routes) {
                 $routes->get('', "RestController::index");
             });
         });
+        $routes->group('sales', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\sale'], function ($routes) {
+                $routes->post('', "RestController::create");
+            });
+        });
     });
 });
