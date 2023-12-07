@@ -91,9 +91,11 @@ class RestController extends ResourceController
         // Verificar que los asientos no hayan sido comprados
         $seatsBuyed = $this->seatOfFunctionModel
             ->select("seat_of_function.id")
+            ->join('seat_of_room', 'seat_of_room.id = seat_of_function.seat_of_room_id')
+            ->join('position_of_seat', 'position_of_seat.id = seat_of_room.position_of_seat_id')
             ->join('sale_detail', 'sale_detail.seat_of_function_id = seat_of_function.id')
             ->where("sale_detail.status = 1 AND seat_of_function.function_id = '$functionId'")
-            ->whereIn("seat_of_function.seat_of_room_id", $seatsIds)
+            ->whereIn("position_of_seat.id", $seatsIds)
             ->findAll();
 
         if (count($seatsBuyed) !== 0) {
@@ -103,8 +105,10 @@ class RestController extends ResourceController
         // Encontrar asientos de función
         $seats = $this->seatOfFunctionModel
             ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
-            ->where("status = 1 AND seat_of_function.function_id = '$functionId'")
-            ->whereIn("seat_of_room_id", $seatsIds)
+            ->join('seat_of_room', 'seat_of_room.id = seat_of_function.seat_of_room_id')
+            ->join('position_of_seat', 'position_of_seat.id = seat_of_room.position_of_seat_id')
+            ->where("seat_of_function.status = 1 AND seat_of_function.function_id = '$functionId'")
+            ->whereIn("position_of_seat.id", $seatsIds)
             ->findAll();
 
 

@@ -19,7 +19,6 @@ $this->section('title'); ?> Listado de ventas <?= $this->endSection(); ?>
                             <th>Cliente</th>
                             <th>Vendedor</th>
                             <th>Total</th>
-                            <th>Estatus</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -29,16 +28,11 @@ $this->section('title'); ?> Listado de ventas <?= $this->endSection(); ?>
                             foreach ($sales as $sale) : ?>
                                 <tr>
                                     <td> <?= $sale['id'] ?> </td>
-                                    <td> <?= $sale['client_name'] ?> </td>
-                                    <td> <?= $sale['worker_name'] ?> </td>
-                                    <td> <?= $sale['payment_status_name'] ?> </td>
+                                    <td> <?= $sale['client_user_name'] ?> </td>
+                                    <td> <?= $sale['worker_user_name'] ?> </td>
+                                    <td> <?= $sale['payment_info_total'] ?> </td>
                                     <td class="d-flex">
                                         <a href="<?= base_url("sales/" . $sale["id"]) ?>" class="btn btn-sm btn-info mx-1" title="Mostrar"><i class="bi bi-info-square"></i></a>
-                                        <a href="<?= base_url("sales/edit/" . $sale["id"]) ?>" class="btn btn-sm btn-success mx-1" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                        <form class="display-none" method="post" action="<?= base_url("sales/" . $sale["id"]) ?>" id="deleteUser<?= $sale['id'] ?>">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <a href="javascript:void(0)" onclick="deleteUser('deleteUser<?= $sale['id'] ?>')" class="btn btn-sm btn-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
-                                        </form>
                                     </td>
                                 </tr>
                             <?php endforeach;

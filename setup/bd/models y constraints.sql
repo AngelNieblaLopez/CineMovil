@@ -101,7 +101,7 @@ CREATE TABLE type_room (
 CREATE TABLE seat_of_room (
     id INT PRIMARY KEY AUTO_INCREMENT,
     room_id INT NOT NULL,
-    name VARCHAR(64),
+    name VARCHAR(64) NOT NULL,
     available bit NOT NULL,
     position_of_seat_id INT NOT NULL,
 

@@ -13,7 +13,7 @@ class SeatOfRoomModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'room_id', 'available', 'position_of_seat_id', 'created_at', 'updated_at', 'status'];
+    protected $allowedFields    = ['id', 'room_id', 'available', 'name', 'position_of_seat_id', 'created_at', 'updated_at', 'status'];
 
     // Dates
     protected $useTimestamps = false;

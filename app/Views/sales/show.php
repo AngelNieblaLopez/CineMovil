@@ -19,31 +19,31 @@ $this->section('title') ?> Detalle venta
                         <h5 class="card-title">Detalle venta</h5>
                         <div class="form-group mb-3">
                             <label clas="form-label">Cliente</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($sale["client_name"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["client_user_name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Trabajador</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($sale["worker_name"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["worker_user_name"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Asientos</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($seats["list"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($custom["list_seats_names"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Total</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($sale["total"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["payment_info_total"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Taxes</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($sale["taxes"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["payment_info_taxes"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Subtotal</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($sale["subtotal"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["payment_info_subtotal"])?>">
                         </div>
                         <div class="form-group mb-3">
                             <label clas="form-label">Estatus de pago</label>
-                            <input type="text" class="form-control" disabled value="<?= trim($sale["payment_status_name"])?>">
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["payment_info_status_name"])?>">
                         </div>
                     </div>
                 </div>

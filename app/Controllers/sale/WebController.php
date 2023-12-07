@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\sale;
+
 use App\Controllers\BaseController;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
@@ -10,12 +11,8 @@ use Predis\Connection\Cluster\RedisCluster;
 
 class WebController extends BaseController
 {
-    protected $roleModel;
-    protected $authModel;
-    protected $typeOfWorkerModel;
-    protected $userModel;
-    protected $clientModel;
-    protected $configModel;
+    protected $saleModel;
+    protected $seatOfRoomModel;
     protected $session;
     protected $db;
 
@@ -24,199 +21,70 @@ class WebController extends BaseController
         helper(['form', 'url', 'session']);
         $this->session = \Config\Services::session();
         $this->db = \Config\Database::connect();
-        $this->roleModel = model('RoleModel');
-        $this->authModel = model('AuthModel');
-        $this->userModel = model('UserModel');
-        $this->clientModel = model('ClientModel');
-        $this->configModel = model('ConfigModel');
+        $this->saleModel = model('SaleModel');
+        $this->seatOfRoomModel = model('SeatOfRoomModel');
     }
 
     /* (PAGES) */
     public function index()
     {
-        $whereFetch = "client.status = 1";
-        $clients = $this->clientModel
-            ->select("
-        client.id,
-        user.name, 
-        user.last_name, 
-        user.second_last_name")
-            ->join('user', 'client.user_id = user.id')
-            ->where($whereFetch)->orderBy('client.id', 'asc')->findAll();
-        return view('clients/index', compact('clients'));
+        $whereFetch = "sale.status = 1 AND payment_status.id = 3";
+        $sales = $this->saleModel
+            ->select("sale.id ,client_user.name AS client_user_name, worker_user.name AS worker_user_name, payment_info.total AS payment_info_total")
+            ->join("client", "client.id = sale.client_id")
+            ->join("user AS client_user", "client_user.id = client.user_id")
+            ->join("worker", "worker.id = sale.worker_id")
+            ->join("user as worker_user", "worker_user.id = worker.user_id")
+            ->join("payment_info", "payment_info.id = sale.payment_info_id")
+            ->join("payment_status", "payment_status.id = payment_info.payment_status_id")
+            ->where($whereFetch)->orderBy('sale.id', 'asc')->findAll();
+        return view('sales/index', compact('sales'));
     }
 
     public function show($id = null)
     {
-        $client = $this->clientModel
-            ->select("
-            client.id,   
-            user.name, 
-            user.last_name, 
-            user.second_last_name,
-            user.email,
-            auth.password,
-            user.role_id")
-            ->join('user', 'client.user_id = user.id')
-            ->join('auth', 'auth.id = user.auth_id')
-            ->where("client.status = 1")->find((int)$id);
-
-        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-
-        if ($client) {
-            return view('clients/show', compact('client', "roles"));
-        } else {
-            return redirect()->to(site_url('/clients'));
-        }
-    }
-
-    public function new()
-    {
-        return view('clients/new');
-    }
-
-    public function edit($id = null)
-    {
-        $client = $this->clientModel
-            ->select("
-        client.id,   
-        user.name, 
-        user.last_name, 
-        user.second_last_name,
-        user.email,
-        auth.password,
-        user.role_id")
-            ->join('user', 'client.user_id = user.id')
-            ->join('auth', 'auth.id = user.auth_id')
-            ->where("client.status = 1")->find((int)$id);
-
-        $roles = $this->roleModel->where("status = 1")->orderBy('id', 'asc')->findAll();
-
-        if ($client) {
-            return view('clients/edit', compact("client", "roles"));
-        } else {
-            session()->setFlashdata('failed', 'Cliente no encontrado');
-            return redirect()->to('/clients');
-        }
-    }
-
-    /* (PAGES) */
-
-    /* (API PAGES) */
-    public function create()
-    {
-        $envv = ENVIRONMENT;
-        $config = $this->configModel
-            ->join('enviroment_server', "enviroment_server.id = config.enviroment_server_id")
-            ->where("config.status = 1 AND enviroment_server.name = '$envv'")->orderBy('config.id', 'asc')->findAll();
-
-        if (count($config) == 0) {
-            throw new Exception("Enviroment no establecido");
-        }
-
-        $this->authModel->save([
-            "password" => $this->request->getVar('password'),
-        ]);
-
-        $authId = $this->db->insertID();
-
-        $this->userModel->save([
-            "auth_id" => $authId,
-            "name" => $this->request->getVar('name'),
-            "last_name" => $this->request->getVar('lastName'),
-            "second_last_name" => $this->request->getVar('secondLastName'),
-            "role_id" => $config[0]["default_customer_role_id"],
-            "email" => $this->request->getVar('email'),
-        ]);
-
-        $userId = $this->db->insertID();
-
-        $this->clientModel->save([
-            "user_id" => $userId,
-        ]);
-
-        session()->setFlashdata("success", "Se agregó un nuevo cliente");
-        return redirect()->to(site_url('/clients'));
-    }
-
-    public function update($id = null)
-    {
-
-        $roleId = $this->request->getVar('roleId');
-        $password = $this->request->getVar('password');
-        $name = $this->request->getVar('name');
-        $lastName = $this->request->getVar('lastName');
-        $secondLastName = $this->request->getVar('secondLastName');
-        $email = $this->request->getVar('email');
-
-
-        $client = $this->clientModel
-            ->select('u.auth_id, client.user_id')
-            ->join('user as u', 'u.id = client.user_id')
-            ->where("client.status = 1")->find($id);
-
-
-        if (!$client) {
-            throw new Exception("Cliente no encontrado");
-        }
-
-        $role = $this->roleModel
-            ->where("status = 1")
-            ->find($roleId);
-
-        if (!$role) {
-            throw new Exception("Role no encontrado");
-        }
-
-        /* UPDATE */
-        $this->authModel->save([
-            "id" => $client["auth_id"],
-            "password" => $password,
-        ]);
-
-        $this->userModel->save([
-            "id" => $client["user_id"],
-            "name" => $name,
-            "last_name" => $lastName,
-            "second_last_name" => $secondLastName,
-            "role_id" => $roleId,
-            "email" => $email,
-        ]);
-
-        session()->setFlashdata('success', "Se modificaron los datos del cliente");
-        return redirect()->to(base_url('/clients'));
-    }
-
-    public function delete($id = null)
-    {
-
-        $client = $this->clientModel
-            ->select("id, user_id")
-            ->where("status = 1")
+        $whereFetch = "sale.status = 1 AND payment_status.id = 3";
+        $sale = $this->saleModel
+        
+            ->select("sale.id ,client_user.name AS client_user_name, worker_user.name AS worker_user_name, 
+            payment_info.total AS payment_info_total, payment_info.subtotal AS payment_info_subtotal, payment_info.taxes AS payment_info_taxes, 
+            payment_status.name AS payment_info_status_name")
+            ->join("client", "client.id = sale.client_id")
+            ->join("user AS client_user", "client_user.id = client.user_id")
+            ->join("worker", "worker.id = sale.worker_id")
+            ->join("user as worker_user", "worker_user.id = worker.user_id")
+            ->join("payment_info", "payment_info.id = sale.payment_info_id")
+            ->join("payment_status", "payment_status.id = payment_info.payment_status_id")
             ->find($id);
 
-        if (!$client) {
-            throw new Exception("Cliente no encontrado");
+        $seats = $this->seatOfRoomModel
+        ->select("seat_of_room.name AS seat_of_room_name")
+        ->join("seat_of_function", "seat_of_function.seat_of_room_id = seat_of_room.id")
+        ->join("sale_detail", "sale_detail.seat_of_function_id = seat_of_function.id")
+        ->join("sale", "sale.id = sale_detail.sale_id")
+        ->where(" sale.status = 1 AND sale.id = '$id'")
+        ->findAll();
+
+        $list_seats_names = "";
+
+        $seats_names = array();
+        foreach($seats as $seat){
+            array_push($seats_names, $seat["seat_of_room_name"]);
+        };
+
+        if(count($seats_names) === 1) {
+            $list_seats_names = $seats[0]["seat_of_room_name"];
+        } else {
+            $list_seats_names = implode(', ', $seats_names);
+        };
+        
+
+        $custom = ["list_seats_names" => $list_seats_names];
+
+        if ($sale) {
+            return view('sales/show', compact('sale', "custom"));
+        } else {
+            return redirect()->to(site_url('/sales'));
         }
-
-
-        $this->clientModel->save([
-            "id" => $client['id'],
-            "status" => 0
-        ]);
-
-        $this->userModel->save([
-            "id" => $client["user_id"],
-            "status" => 0
-        ]);
-
-        session()->setFlashdata('success', 'Cliente eliminado');
-        return redirect()->to(base_url('/clients'));
     }
-    /* (API PAGES) */
-
-
-    /* (API MOBILE) */
-
-    /* (API MOBILE) */
 }
