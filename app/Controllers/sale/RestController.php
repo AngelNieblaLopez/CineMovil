@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers\sale;
+
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\ConfigModel;
 use App\Models\AuthModel;
@@ -46,9 +47,8 @@ class RestController extends ResourceController
         $this->paymentInfoModel = new PaymentInfoModel();
         $this->paymentCardModel = new PaymentCardModel();
     }
-    
 
- 
+
     /**
      * Create a new resource object, from "posted" parameters
      *
@@ -82,43 +82,41 @@ class RestController extends ResourceController
         $subtotal = 0;
         $taxes = 0;
         $total = 0;
-        if(count($seatsIds) == 0) {
+
+        if (count($seatsIds) == 0) {
             throw new Exception("No se enviaron asientos");
         }
 
 
-        
-        $stringSeatsIds = implode(',', $seatsIds);
+        // Verificar que los asientos no hayan sido comprados
+        $seatsBuyed = $this->seatOfFunctionModel
+            ->select("seat_of_function.id")
+            ->join('sale_detail', 'sale_detail.seat_of_function_id = seat_of_function.id')
+            ->where("sale_detail.status = 1 AND seat_of_function.function_id = '$functionId'")
+            ->whereIn("seat_of_function.seat_of_room_id", $seatsIds)
+            ->findAll();
 
+        if (count($seatsBuyed) !== 0) {
+            throw new Exception("Hay asientos ya comprados");
+        }
+
+        // Encontrar asientos de función
         $seats = $this->seatOfFunctionModel
-        // ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
-        // ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
-        ->where("seat_of_function.seat_of_room_id IN ('1','2','3')")
-        ->findAll();
+            ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
+            ->where("status = 1 AND seat_of_function.function_id = '$functionId'")
+            ->whereIn("seat_of_room_id", $seatsIds)
+            ->findAll();
 
 
-        $as = $this->seatOfRoomModel
-        ->where("id IN ('1','2' ,'3')")
-        ->findAll();
-
-        if(count($seats) !== count($seatsIds)) {
+        if (count($seats) !== count($seatsIds)) {
             throw new Exception("Los asientos no fueron encontrados");
         }
 
-        $seatsBuyed = $this->seatOfFunctionModel
-        ->select("seat_of_function.price AS priceSeat, seat_of_function.id AS seat_of_function_id")
-        ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
-        ->join('sale_detail', 'sale_detail.seat_of_function_id = seat_of_function.id')
-        ->where("seat_of_function.status = 1 AND seat_of_function.function_id = '$functionId' AND seat_of_function.seat_of_room_id IN ('$stringSeatsIds')")->findAll();
-        
-        if(count($seatsBuyed) !== 0) {
-            throw new Exception("Hay asientos ya comprados");
-        }
 
         foreach ($seats as $seat) {
             $subtotal += $seat["priceSeat"];
         }
-        
+
         $taxes = $subtotal * 0.16;
         $total = $subtotal + $taxes;
 
@@ -138,12 +136,12 @@ class RestController extends ResourceController
             "payment_card_id" => $paymentCardId,
             "payment_status_id" => 3
         ]);
-        
+
         $paymentInfoId = $this->db->insertID();
         $this->saleModel->save([
-            "client_id" => $clientId,
-            "worker_id" => $workerId,
-            "payment_info_id" => $paymentInfoId,
+            "client_id" => intval($clientId),
+            "worker_id" => intval($workerId),
+            "payment_info_id" => intval($paymentInfoId),
         ]);
 
         $saleId = $this->db->insertID();
@@ -162,5 +160,4 @@ class RestController extends ResourceController
 
         return $this->respond($respuesta, 201);
     }
-
 }
