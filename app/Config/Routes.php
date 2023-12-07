@@ -22,6 +22,7 @@ $routes->group('workers', ['namespace' => 'App\Controllers\worker'], function ($
     $routes->get('new', 'WebController::new');
     $routes->get('(:num)', 'WebController::show/$1');
     $routes->get('edit/(:num)', 'WebController::edit/$1');
+    $routes->get('login', 'WebController::loginView');
 });
 
 $routes->group('clients', ['namespace' => 'App\Controllers\client'], function ($routes) {
@@ -84,6 +85,7 @@ $routes->group('api', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\worker'], function ($routes) {
                 $routes->post('', "WebController::create");
                 $routes->put('(:num)', "WebController::update/$1");
+                $routes->post('login', "WebController::login");
                 $routes->delete('(:num)', "WebController::delete/$1");
             });
         });

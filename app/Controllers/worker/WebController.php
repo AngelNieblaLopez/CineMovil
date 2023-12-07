@@ -49,6 +49,34 @@ class WebController extends BaseController
             
     }
 
+    public function loginView()
+    {
+        return view('workers/login');
+    }
+
+    public function login()
+    {
+        $json = $this->request->getJSON();
+        
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+
+        $worker = $this->workerModel
+        ->where("user.email = '$email' AND auth.password = '$password' AND worker.status = 1")
+        ->join("user", "user.id = worker.user_id")
+        ->join("auth", "auth.id = user.auth_id")
+        ->findAll(1);
+
+        if($worker) {
+            session()->setFlashdata("success", "Login realizado");
+            return redirect()->to(site_url('/workers'));
+        } else {
+            session()->setFlashdata("failed", "Login fallido");
+            return redirect()->to(site_url('/workers/login'));
+        }
+
+    }
+
 
     public function show($id = null) {
         $whereFetch = "worker.status = 1";
