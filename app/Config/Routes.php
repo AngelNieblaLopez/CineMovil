@@ -152,5 +152,15 @@ $routes->group('api', function ($routes) {
                 $routes->post('', "RestController::create");
             });
         });
+        $routes->group('movies', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\movie'], function ($routes) {
+                $routes->get('(:num)', "RestController::detail/$1");
+            });
+        });
+        $routes->group('seats', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\seat'], function ($routes) {
+                $routes->get('(:num)', "RestController::available/$1");
+            });
+        });
     });
 });

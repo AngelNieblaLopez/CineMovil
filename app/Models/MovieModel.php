@@ -13,7 +13,7 @@ class MovieModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ["id", "name", "description", "duration", "created_at", "updated_at", "status"];
+    protected $allowedFields    = ["id", "name", "description", "image_url", "duration", "created_at", "updated_at", "status"];
 
     // Dates
     protected $useTimestamps = false;

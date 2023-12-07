@@ -65,6 +65,7 @@ CREATE TABLE role (
 
 CREATE TABLE movie (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    image_url VARCHAR(500) NOT NULL,
     name VARCHAR(64),
     description varchar(3024),
     category_id INT NOT NULL,

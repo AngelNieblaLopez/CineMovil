@@ -28,9 +28,9 @@ INSERT INTO category (name, description) VALUES ("Animada", "Pelicula animada");
 INSERT INTO category (name, description) VALUES ("Live action", "Película live action animada");
 INSERT INTO category (name, description) VALUES ("Horror", "Película de miedo");
 
-INSERT INTO movie (name, description, category_id, movie_clasification_id, duration) VALUES ("pelicula 1", "Película  de harry potter 1", 1, 1,120);
-INSERT INTO movie (name, description, category_id, movie_clasification_id, duration) VALUES ("pelicula 2", "Película  de harry potter 2", 2, 2, 100);
-INSERT INTO movie (name, description, category_id, movie_clasification_id, duration) VALUES ("pelicula 3", "Película  de harry potter 3 ", 3, 3, 200);
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("pelicula 1", "Película  de harry potter 1", 1, 1,120, "");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("pelicula 2", "Película  de harry potter 2", 2, 2, 100, "");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("pelicula 3", "Película  de harry potter 3 ", 3, 3, 200, "");
 
 INSERT INTO function_status (name) VALUES ("Pendiente");
 INSERT INTO function_status (name) VALUES ("En curso");
