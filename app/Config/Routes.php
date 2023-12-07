@@ -142,6 +142,7 @@ $routes->group('api', function ($routes) {
         $routes->group('functions', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\function'], function ($routes) {
                 $routes->get('available', "RestController::available");
+                $routes->get('available_by_movie/(:num)', "RestController::availableByMovie/$1");
             });
         });
         $routes->group('cinemas', function ($routes) {
@@ -156,6 +157,7 @@ $routes->group('api', function ($routes) {
         });
         $routes->group('movies', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\movie'], function ($routes) {
+                $routes->get('with_function', "RestController::withFunction");
                 $routes->get('(:num)', "RestController::detail/$1");
             });
         });

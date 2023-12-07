@@ -62,4 +62,32 @@ class RestController extends ResourceController
 
         return $this->respond($respuesta, $httpCode);
     }
+
+        /**
+     * Create a new resource object, from "posted" parameters
+     *
+     * @return mixed
+     */
+    public function availableByMovie($id)
+    {
+
+        $functions = $this->functionModel
+            ->select("function.id, room.id AS room_id, room.name AS room_name, movie.duration AS movie_duration, start_date, movie.name AS movie_name, movie.id AS movie_id")
+            ->join("room", "room.id = function.room_id")
+            ->join("movie", "movie.id = function.movie_id")
+            ->where("function.status = 1 AND DATE_ADD(function.start_date, INTERVAL movie.duration MINUTE) > NOW() AND movie.id = '$id'")
+            ->findAll();
+
+
+        $httpCode = 200;
+        $respuesta = [
+            'error' => null,
+            'message' => ['success' => 'Recurso obtenido satisfactoriamente'],
+            'data' => $functions
+        ];
+
+
+        return $this->respond($respuesta, $httpCode);
+    }
+    
 }
