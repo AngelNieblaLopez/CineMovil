@@ -115,7 +115,7 @@ class RestController extends ResourceController
             $respuesta = [
                 'error' => null,
                 'message' => ['success' => 'Recurso obtenido satisfactoriamente'],
-                'data' => $user
+                'data' => $user[0]
             ];
         } else {
             $respuesta = [
