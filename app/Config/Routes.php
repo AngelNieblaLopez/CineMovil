@@ -71,6 +71,8 @@ $routes->group('sales', ['namespace' => 'App\Controllers\sale'], function ($rout
 
 
 
+
+
 // API
 $routes->group('api', function ($routes) {
     $routes->group('web', function ($routes) {
@@ -168,3 +170,6 @@ $routes->group('api', function ($routes) {
         });
     });
 });
+
+
+$routes->get('/', 'Home::index');
