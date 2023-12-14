@@ -104,6 +104,7 @@ class RestController extends ResourceController
         $password = $queryParams["password"];
 
         $user = $this->clientModel
+        ->select("client.id")
         ->where("user.email = '$email' AND auth.password = '$password' AND client.status = 1")
         ->join("user", "user.id = client.user_id")
         ->join("auth", "auth.id = user.auth_id")

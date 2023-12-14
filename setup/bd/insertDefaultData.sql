@@ -28,9 +28,12 @@ INSERT INTO category (name, description) VALUES ("Animada", "Pelicula animada");
 INSERT INTO category (name, description) VALUES ("Live action", "Película live action animada");
 INSERT INTO category (name, description) VALUES ("Horror", "Película de miedo");
 
-INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("pelicula 1", "Película  de harry potter 1", 1, 1,120, "");
-INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("pelicula 2", "Película  de harry potter 2", 2, 2, 100, "");
-INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("pelicula 3", "Película  de harry potter 3 ", 3, 3, 200, "");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("Harry Potter y la piedra filosofal", "Harry Potter y la piedra filosofal", 1, 1,120, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmef6ypjGcpnDOcGhZUr7tGf9-a4ROfEp-rkwzRIeWMBjBFkQA");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("Harry Potter y la cámara secreta", "Harry Potter y la cámara secreta", 2, 2, 100, "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTKoQi-Ht4amTZpAnqxHWCTuTDGbP0k7Ez3uoivUCHb_u6aeWHz");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("oso ted 1", "Oso ted 1", 1, 1, 150, "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcT_B-IlDVnnUHpautmNU6eQhCt51OJ1qVj8OynbLoZqp45M9cpwKfg4figW7ap2Tdab");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("calabozos y dragones", "Calabozos y dragones", 2, 2, 200, "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRbDPbdEhbaUTBZ11YUQT22b1tyb_lnuIqMI1W4mSCPB_HyXo5P");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("Harry Potter y el prisionero de Azkaban", "Harry Potter y el prisionero de Azkaban", 3, 3, 200, "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQRjZMuMo-D49IgcC_NOcqRzZOD2veP2kAdM2gffSKBCK2CjYdn");
+INSERT INTO movie (name, description, category_id, movie_clasification_id, duration, image_url) VALUES ("Gato con botas: el último deseo", "Gato con botas: el último deseo", 1, 1, 140, "https://www.dreamworks.com/storage/cms-uploads/puss-in-boots-the-last-wish-poster-thumbnail2.jpg");
 
 INSERT INTO function_status (name) VALUES ("Pendiente");
 INSERT INTO function_status (name) VALUES ("En curso");
