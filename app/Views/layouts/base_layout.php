@@ -15,12 +15,12 @@
 <body>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-2 px-sm-2 px-0 bg-secondary bg-gradient">
+            <div class="col-auto col-md-2 px-sm-2 px-0 bg-secondary bg-gradient bg-opacity-10">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-gray min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-gray text-decoration-none" style="font-weight:bold; color: white !important;">
                         <span class="fs-5 d-none d-sm-inline" style="font-size:xx-large !important;" >Menu</span>
                     </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="nav-item">
                             <a href="/" class="nav-link align-middle px-0" style="color: white !important;">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
