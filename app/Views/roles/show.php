@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Crear nuevo rol <?= $this->endSection() ?>
+$this->section('title') ?> Detalle rol <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 

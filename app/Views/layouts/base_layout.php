@@ -27,6 +27,10 @@
                             </a>
                         </li>
                         <li>
+                            <a href="/movies" class="nav-link px-0 align-middle" style="color: white !important;" >
+                                <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Peliculas</span></a>
+                        </li>
+                        <li>
                             <a href="/roles" class="nav-link px-0 align-middle" style="color: white !important;" >
                                 <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Roles</span></a>
                         </li>

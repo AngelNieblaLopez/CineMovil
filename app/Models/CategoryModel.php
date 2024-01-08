@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class MovieModel extends Model
+class CategoryModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'movie';
+    protected $table            = 'category';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ["id", "name", "description","category_id", "movie_clasification_id", "image_url", "duration", "created_at", "updated_at", "status"];
+    protected $allowedFields    = ['id', 'name', 'description', 'created_at', 'updated_at', 'status'];
 
     // Dates
     protected $useTimestamps = false;

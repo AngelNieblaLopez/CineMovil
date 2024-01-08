@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Crear trabajador
+$this->section('title') ?> Editar trabajador
 <?= $this->endSection() ?>
 
 

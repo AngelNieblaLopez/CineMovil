@@ -40,6 +40,7 @@ $this->section('title'); ?> Listado de funciones <?= $this->endSection(); ?>
                             <th>Fecha inicio</th>
                             <th>Estatus</th>
                             <th>Pelicula</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

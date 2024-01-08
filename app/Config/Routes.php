@@ -17,6 +17,13 @@ $routes->group('roles', ['namespace' => 'App\Controllers\role'], function ($rout
     $routes->get('edit/(:num)', 'WebController::edit/$1');
 });
 
+$routes->group('movies', ['namespace' => 'App\Controllers\movie'], function ($routes) {
+    $routes->get('', 'WebController::index');
+    $routes->get('new', 'WebController::new');
+    $routes->get('(:num)', 'WebController::show/$1');
+    $routes->get('edit/(:num)', 'WebController::edit/$1');
+});
+
 $routes->group('workers', ['namespace' => 'App\Controllers\worker'], function ($routes) {
     $routes->get('', 'WebController::index');
     $routes->get('new', 'WebController::new');
@@ -78,6 +85,13 @@ $routes->group('api', function ($routes) {
     $routes->group('web', function ($routes) {
         $routes->group('roles', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\role'], function ($routes) {
+                $routes->post('', "WebController::create");
+                $routes->put('(:num)', "WebController::update/$1");
+                $routes->delete('(:num)', "WebController::delete/$1");
+            });
+        });
+        $routes->group('movies', function ($routes) {
+            $routes->group('v1', ['namespace' => 'App\Controllers\movie'], function ($routes) {
                 $routes->post('', "WebController::create");
                 $routes->put('(:num)', "WebController::update/$1");
                 $routes->delete('(:num)', "WebController::delete/$1");

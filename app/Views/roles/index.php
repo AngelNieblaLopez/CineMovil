@@ -38,6 +38,7 @@ $this->section('title'); ?> Listado de roles <?= $this->endSection(); ?>
                             <th>Id</th>
                             <th>Name</th>
                             <th>Es trabajador</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

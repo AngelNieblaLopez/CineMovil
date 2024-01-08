@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Crear nuevo cliente
+$this->section('title') ?> Detalle cliente
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

@@ -41,7 +41,7 @@ class RestController extends ResourceController
     {
 
         $movie = $this->movieModel
-            ->select("movie.name AS movie_name, movie.description AS movie_description, category.name AS category_name, movie_clasification.name AS movie_clasification_name, category.description AS category_description, movie.image_url AS movie_image_url")
+            ->select("movie.name AS movie_name, movie.description AS movie_description, category.name AS category_name, movie_clasification.name AS movie_clasification_name, category.description AS category_description, movie.image_url AS movie_image_url, movie.duration")
             ->join("category", "category.id = movie.category_id")
             ->join("movie_clasification", "movie_clasification.id = movie.movie_clasification_id")
             ->where("movie.status = 1")->find($id);

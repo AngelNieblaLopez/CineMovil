@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Editar configuración
+$this->section('title') ?> Detalle configuración
 <?= $this->endSection() ?>
 
 

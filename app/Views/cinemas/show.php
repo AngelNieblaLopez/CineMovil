@@ -1,5 +1,5 @@
 <?= $this->extend('layouts/base_layout');
-$this->section('title') ?> Editar cine
+$this->section('title') ?> Detalle cine
 <?= $this->endSection() ?>
 
 

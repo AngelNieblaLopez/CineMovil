@@ -38,6 +38,7 @@ $this->section('title'); ?> Listado de tipos de sala <?= $this->endSection(); ?>
                             <th>Id</th>
                             <th>Name</th>
                             <th>Precio</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
