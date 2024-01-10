@@ -26,6 +26,23 @@ $this->section('title') ?> Detalle venta
                             <input type="text" class="form-control" disabled value="<?= trim($sale["worker_user_name"])?>">
                         </div>
                         <div class="form-group mb-3">
+                            <label clas="form-label">Pelicula</label>
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["movie_name"])?>">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label clas="form-label">Cine</label>
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["cinema_name"])?>">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label clas="form-label">Sala</label>
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["room_name"])?>">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label clas="form-label">Fecha emision</label>
+                            <input type="text" class="form-control" disabled value="<?= trim($sale["function_start_date"])?>">
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label clas="form-label">Asientos</label>
                             <input type="text" class="form-control" disabled value="<?= trim($custom["list_seats_names"])?>">
                         </div>

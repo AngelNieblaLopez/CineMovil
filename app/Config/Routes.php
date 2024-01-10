@@ -169,6 +169,7 @@ $routes->group('api', function ($routes) {
         $routes->group('sales', function ($routes) {
             $routes->group('v1', ['namespace' => 'App\Controllers\sale'], function ($routes) {
                 $routes->post('', "RestController::create");
+                $routes->get('client/(:num)', "RestController::detail/$1");
             });
         });
         $routes->group('movies', function ($routes) {

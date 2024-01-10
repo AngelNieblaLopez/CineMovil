@@ -48,13 +48,20 @@ class WebController extends BaseController
         
             ->select("sale.id ,client_user.name AS client_user_name, worker_user.name AS worker_user_name, 
             payment_info.total AS payment_info_total, payment_info.subtotal AS payment_info_subtotal, payment_info.taxes AS payment_info_taxes, 
-            payment_status.name AS payment_info_status_name")
+            payment_status.name AS payment_info_status_name, movie.name AS movie_name, cinema.name AS cinema_name, room.name AS room_name, function.start_date AS function_start_date")
             ->join("client", "client.id = sale.client_id")
             ->join("user AS client_user", "client_user.id = client.user_id")
             ->join("worker", "worker.id = sale.worker_id")
             ->join("user as worker_user", "worker_user.id = worker.user_id")
             ->join("payment_info", "payment_info.id = sale.payment_info_id")
             ->join("payment_status", "payment_status.id = payment_info.payment_status_id")
+            ->join("sale_detail", "sale_detail.sale_id = sale.id")
+            ->join("seat_of_function", "seat_of_function.id = sale_detail.seat_of_function_id")
+            ->join("seat_of_room", "seat_of_room.id = seat_of_function.seat_of_room_id")
+            ->join("room", "room.id = seat_of_room.room_id")
+            ->join("cinema", "cinema.id = room.cinema_id")
+            ->join("function", "function.id = seat_of_function.function_id")
+            ->join("movie", "movie.id = function.movie_id")
             ->find($id);
 
         $seats = $this->seatOfRoomModel

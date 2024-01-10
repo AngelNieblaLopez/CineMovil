@@ -22,48 +22,48 @@
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                         <li class="nav-item">
-                            <a href="/" class="nav-link align-middle px-0" style="color: white !important;">
+                            <a href="<?= base_url('') ?>" class="nav-link align-middle px-0" style="color: white !important;">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
                             </a>
                         </li>
                         <li>
-                            <a href="/movies" class="nav-link px-0 align-middle" style="color: white !important;" >
+                            <a href="<?= base_url('movies') ?>" class="nav-link px-0 align-middle" style="color: white !important;" >
                                 <i class="fs-4 bi-images"></i> <span class="ms-1 d-none d-sm-inline">Peliculas</span></a>
                         </li>
                         <li>
-                            <a href="/roles" class="nav-link px-0 align-middle" style="color: white !important;" >
+                            <a href="<?= base_url('roles') ?>" class="nav-link px-0 align-middle" style="color: white !important;" >
                                 <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Roles</span></a>
                         </li>
                         <li>
-                            <a href="/workers" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('workers') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Trabajadores</span> </a>
                         </li>
                         <li>
-                            <a href="/clients" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('clients') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Clientes</span> </a>
                         </li>
                         <li>
-                            <a href="/cinemas" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('cinemas') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi-box"></i> <span class="ms-1 d-none d-sm-inline">Cines</span> </a>
                         </li>
                         <li>
-                            <a href="/configs" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('configs') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi-gear"></i> <span class="ms-1 d-none d-sm-inline">Configuración</span> </a>
                         </li>
                         <li>
-                            <a href="/typesRoom" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('typesRoom') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi-command"></i> <span class="ms-1 d-none d-sm-inline">Tipos de habitación</span> </a>
                         </li>
                         <li>
-                            <a href="/rooms" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href=" <?= base_url('rooms') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi-command"></i> <span class="ms-1 d-none d-sm-inline">Sala</span> </a>
                         </li>
                         <li>
-                            <a href="/functions" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('functions') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi bi-table"></i> <span class="ms-1 d-none d-sm-inline">Funciones</span> </a>
                         </li>
                         <li>
-                            <a href="/sales" class="nav-link px-0 align-middle" style="color: white !important;">
+                            <a href="<?= base_url('sales') ?>" class="nav-link px-0 align-middle" style="color: white !important;">
                                 <i class="fs-4 bi bi-table"></i> <span class="ms-1 d-none d-sm-inline">Ventas</span> </a>
                         </li>
                     </ul>
