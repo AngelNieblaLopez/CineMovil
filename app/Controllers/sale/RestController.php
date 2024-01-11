@@ -172,8 +172,8 @@ class RestController extends ResourceController
 
         $salesOfClient = $this->saleModel
             ->select("sale.id AS sale_id")
-            ->join("client", "client.id = '$clientId'")
-            ->where("sale.status = 1 AND client.status = 1")
+            ->join("client", "client.id = sale.client_id")
+            ->where("sale.status = 1 AND client.status = 1 AND client.id = '$clientId'")
             ->findAll();
 
 
